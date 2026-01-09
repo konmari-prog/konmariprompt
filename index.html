@@ -504,8 +504,11 @@
                     nav.appendChild(li);
                 });
 
-                // 初期表示
-                switchCategory(promptData.categories[0].id);
+                // 初期表示（外部リンクでない最初のカテゴリーを選択）
+                const firstCategory = promptData.categories.find(c => !c.externalLink && c.prompts && c.prompts.length > 0);
+                if (firstCategory) {
+                    switchCategory(firstCategory.id);
+                }
 
                 // ローディング終了
                 setTimeout(() => {
@@ -553,6 +556,8 @@
         function renderGrid() {
             const grid = document.getElementById('prompt-grid');
             grid.innerHTML = '';
+
+            if (!currentCategory || !currentCategory.prompts) return;
 
             currentCategory.prompts.forEach((p, i) => {
                 const card = document.createElement('div');
