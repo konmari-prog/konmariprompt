@@ -1,623 +1,1105 @@
 <!DOCTYPE html>
+<!--
+  Based on: SIMPLE v1.0 Template
+  Adapted for: KONMARI prompt Collection
+-->
 <html lang="ja">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#FFF8E7">
+
     <title>KONMARI prompt</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <style>
         :root {
-            --cyan: #00C9D4;
-            --pink: #FF6B9D;
-            --yellow: #FFE156;
-            --purple: #9B7ED9;
-            --bg: #FFF8E7;
-            --text: #2D3748;
-            --card-bg: #FFFFFF;
+            --cursor-size: 20px;
+            --cursor-hover-size: 60px;
+            --text-main: #2D3748;
+            --text-sub: #555;
+            --bg-body: #FFF8E7;
+            --bg-footer: #2D3748;
+            --accent-cyan: #00C9D4;
+            --accent-pink: #FF6B9D;
+            --accent-yellow: #FFE156;
+            --accent-purple: #9B7ED9;
+            --font-main: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+            --font-heading: 'Zen Maru Gothic', sans-serif;
+            --spacing-container: 24px;
+            --spacing-container-md: 96px;
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+        }
+
+        html {
+            background-color: var(--bg-body);
+            overscroll-behavior-y: none;
         }
 
         body {
-            font-family: 'Zen Maru Gothic', 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
+            font-family: var(--font-main);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            width: 100%;
+            cursor: none;
+            overscroll-behavior-y: none;
         }
 
-        /* ヘッダー */
-        header {
-            background: linear-gradient(135deg, var(--cyan) 0%, var(--pink) 50%, var(--yellow) 100%);
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        .header-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid white;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .header-text h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .header-text p {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        /* メインコンテナ */
-        .container {
-            display: flex;
-            height: calc(100vh - 112px);
-        }
-
-        /* サイドバー（カテゴリー） */
-        .sidebar {
-            width: 200px;
-            background: var(--card-bg);
-            border-right: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 1rem 0;
-            overflow-y: auto;
-            flex-shrink: 0;
-        }
-
-        .nav-item {
+        ul {
             list-style: none;
         }
 
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text);
-            border-left: 3px solid transparent;
+        @media (hover: none) and (pointer: coarse) {
+            body {
+                cursor: auto;
+            }
+
+            #custom-cursor {
+                display: none;
+            }
         }
 
-        .nav-link:hover {
-            background: rgba(0, 201, 212, 0.1);
+        /* カスタムカーソル */
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--cursor-size);
+            height: var(--cursor-size);
+            border: 1px solid #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            background-color: transparent;
+            transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1),
+                height 0.3s cubic-bezier(0.19, 1, 0.22, 1),
+                background-color 0.3s ease;
         }
 
-        .nav-link.active {
-            background: linear-gradient(90deg, rgba(0, 201, 212, 0.15), transparent);
-            border-left-color: var(--cyan);
-            color: var(--cyan);
-            font-weight: 700;
+        #custom-cursor.hovered {
+            width: var(--cursor-hover-size);
+            height: var(--cursor-hover-size);
+            background-color: #fff;
+            border-color: transparent;
         }
 
-        .nav-link .material-icons {
-            font-size: 1.1rem;
-        }
-
-        /* メインエリア */
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* グリッドエリア */
-        .grid-area {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 1rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-img {
-            width: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
-        }
-
-        .card-info {
-            padding: 0.75rem;
-        }
-
-        .card-title {
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-            line-height: 1.3;
-        }
-
-        .card-subtitle {
-            font-size: 0.65rem;
-            color: #888;
-        }
-
-        /* モーダル */
-        #modal {
+        /* ローディング画面 */
+        #loader {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        .modal-container {
-            background: var(--card-bg);
-            width: 100%;
-            max-width: 900px;
-            max-height: 90vh;
-            border-radius: 20px;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-pink) 50%, var(--accent-yellow) 100%);
+            z-index: 10000;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .loader-text-wrapper {
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .loader-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            transform: translateY(100%);
+            opacity: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 共通クラス */
+        .container-padding {
+            padding-left: var(--spacing-container);
+            padding-right: var(--spacing-container);
+        }
+
+        @media (min-width: 768px) {
+            .container-padding {
+                padding-left: var(--spacing-container-md);
+                padding-right: var(--spacing-container-md);
+            }
+        }
+
+        .section-py {
+            padding-top: 8rem;
+            padding-bottom: 8rem;
+        }
+
+        /* ヘッダー */
+        .header-section {
+            min-height: 100vh;
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 6rem;
+            padding-bottom: 8rem;
             position: relative;
+            width: 100%;
+            overflow: hidden;
         }
 
-        .modal-left {
-            width: 40%;
-            flex-shrink: 0;
+        .parallax-bg {
+            position: absolute;
+            right: -5%;
+            top: 10%;
+            font-weight: bold;
+            color: rgba(0, 201, 212, 0.1);
+            user-select: none;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+            line-height: 0.8;
+            font-size: 15vw;
+            transform: translateY(0);
+            will-change: transform;
         }
 
-        .modal-img {
+        @media (max-width: 768px) {
+            .parallax-bg {
+                font-size: 20vw;
+                opacity: 0.1;
+                top: 10%;
+                right: -10%;
+            }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1024px;
+            width: 100%;
+        }
+
+        .header-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 2rem;
+            border: 4px solid var(--accent-pink);
+            box-shadow: 0 8px 30px rgba(255, 107, 157, 0.3);
+        }
+
+        @media (min-width: 768px) {
+            .header-icon {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            margin-bottom: 2rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        @media (min-width: 768px) {
+            .user-role {
+                font-size: 0.875rem;
+            }
+        }
+
+        .user-name {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-purple) 50%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            width: 100%;
+            word-break: break-word;
+            line-height: 1.1;
+        }
+
+        @media (min-width: 768px) {
+            .user-name {
+                font-size: 5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .user-name {
+                font-size: 6rem;
+            }
+        }
+
+        .separator-line {
+            width: 4rem;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+            margin-bottom: 3rem;
+            transform-origin: left;
+            transform: scaleX(0);
+            border-radius: 2px;
+        }
+
+        @media (min-width: 768px) {
+            .separator-line {
+                width: 6rem;
+            }
+        }
+
+        .user-bio {
+            font-size: 0.875rem;
+            line-height: 2;
+            font-weight: 500;
+            color: var(--text-sub);
+            letter-spacing: 0.025em;
+            max-width: 36rem;
+        }
+
+        @media (min-width: 768px) {
+            .user-bio {
+                font-size: 1rem;
+            }
+        }
+
+        .reveal-text {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+            padding-right: 0.15em;
+            margin-right: -0.15em;
+            padding-bottom: 0.05em;
+        }
+
+        .reveal-text span {
+            display: block;
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        .br-mobile {
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .br-mobile {
+                display: none;
+            }
+        }
+
+        /* スクロール指示 */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0.6;
+            animation: bounce-slow 2s infinite;
+        }
+
+        @media (min-width: 768px) {
+            .scroll-indicator {
+                left: 6rem;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .scroll-indicator {
+                display: none;
+            }
+        }
+
+        @keyframes bounce-slow {
+
+            0%,
+            100% {
+                transform: translateY(-25%);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+
+            50% {
+                transform: translateY(0);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+
+        .scroll-text {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background-color: var(--text-main);
+        }
+
+        /* カテゴリータブ */
+        .category-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--accent-cyan);
+            background-color: transparent;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-main);
+            color: var(--accent-cyan);
+        }
+
+        .category-tab:hover {
+            background-color: var(--accent-cyan);
+            color: #fff;
+        }
+
+        .category-tab.active {
+            background-color: var(--accent-cyan);
+            color: #fff;
+        }
+
+        .category-tab.external {
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .category-tab.external:hover {
+            background-color: var(--accent-purple);
+            color: #fff;
+        }
+
+        /* プロンプトギャラリー */
+        .gallery-section {
+            background-color: #fff;
+            position: relative;
+            z-index: 20;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #f3f4f6;
+            padding-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.875rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--accent-pink);
+        }
+
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        .section-number {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 0.25rem;
+        }
+
+        @media (min-width: 768px) {
+            .section-number {
+                font-size: 0.75rem;
+            }
+        }
+
+        #prompts-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            #prompts-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 4rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            #prompts-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .prompt-card {
+            position: relative;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .prompt-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-image-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background-color: #e5e7eb;
+            margin-bottom: 1.5rem;
+            border-radius: 16px;
+        }
+
+        .card-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+            will-change: transform;
+            display: block;
         }
 
-        .modal-right {
-            flex: 1;
-            padding: 1.5rem;
+        .prompt-card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 0;
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
             display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        .modal-header {
+        .card-icon {
+            font-size: 24px;
+            background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            font-style: italic;
             margin-bottom: 1rem;
         }
 
-        .modal-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--pink);
-            margin-bottom: 0.25rem;
-        }
-
-        .modal-subtitle {
-            font-size: 0.8rem;
-            color: #888;
-        }
-
-        .modal-prompt-box {
-            flex: 1;
-            background: #f5f5f5;
-            padding: 1rem;
-            border-radius: 10px;
-            font-family: 'Consolas', monospace;
-            font-size: 0.75rem;
-            line-height: 1.5;
-            color: #444;
-            white-space: pre-wrap;
-            overflow-y: auto;
-            border: 1px solid #e0e0e0;
-        }
-
-        .modal-actions {
+        .card-actions {
             display: flex;
             gap: 0.75rem;
             margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid #eee;
         }
 
         .btn {
             flex: 1;
-            padding: 0.9rem 1.5rem;
-            border-radius: 10px;
-            border: none;
+            padding: 12px 20px;
+            border: 2px solid var(--accent-pink);
+            background-color: transparent;
+            border-radius: 50px;
+            font-size: 0.75rem;
             font-weight: 700;
-            font-size: 0.85rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            font-family: var(--font-main);
+            letter-spacing: 0.05em;
+            color: var(--accent-pink);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--cyan), var(--purple));
-            color: white;
+        .btn:hover {
+            background-color: var(--accent-pink);
+            color: #fff;
         }
 
-        .btn-primary:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 15px rgba(0, 201, 212, 0.4);
+        .btn.copied {
+            background-color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            color: #fff;
         }
 
-        .btn-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.1);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            z-index: 10;
-        }
-
-        .btn-close:hover {
-            background: var(--pink);
-            color: white;
-        }
-
-        /* レスポンシブ */
-        @media (max-width: 768px) {
-            header {
-                padding: 0.75rem 1rem;
-            }
-
-            .header-img {
-                width: 50px;
-                height: 50px;
-            }
-
-            .header-text h1 {
-                font-size: 1.2rem;
-            }
-
-            .container {
-                flex-direction: column;
-                height: auto;
-            }
-
-            .sidebar {
-                width: 100%;
-                display: flex;
-                overflow-x: auto;
-                padding: 0.5rem;
-                border-right: none;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            }
-
-            .nav-item {
-                flex-shrink: 0;
-            }
-
-            .nav-link {
-                padding: 0.5rem 0.75rem;
-                border-left: none;
-                border-bottom: 2px solid transparent;
-                font-size: 0.75rem;
-            }
-
-            .nav-link.active {
-                border-left: none;
-                border-bottom-color: var(--cyan);
-            }
-
-            .grid-area {
-                height: calc(100vh - 180px);
-            }
-
-            .grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-                gap: 0.75rem;
-            }
-
-            .modal-container {
-                flex-direction: column;
-                max-height: 95vh;
-            }
-
-            .modal-left {
-                width: 100%;
-                height: 200px;
-            }
-
-            .modal-right {
-                padding: 1rem;
-            }
-        }
-
-        /* ローダー */
-        #loader {
+        /* モーダル */
+        #prompt-modal {
             position: fixed;
             inset: 0;
-            background: linear-gradient(135deg, var(--cyan) 0%, var(--pink) 50%, var(--yellow) 100%);
-            z-index: 10000;
-            display: flex;
+            z-index: 15000;
+            display: none;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.98);
+            opacity: 0;
+            padding: 2rem;
         }
 
-        .loader-content {
-            text-align: center;
-            color: white;
+        .modal-content {
+            max-width: 900px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            background-color: #fff;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            transform: scale(0.95);
+            opacity: 0;
+            border-radius: 20px;
         }
 
-        .loader-title {
-            font-size: 2rem;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .loader-bar {
-            width: 150px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            margin: 1rem auto 0;
-            border-radius: 2px;
+        .modal-image-wrapper {
+            width: 100%;
+            aspect-ratio: 1 / 1;
             overflow: hidden;
+            background-color: #e5e7eb;
+            margin-bottom: 2rem;
+            border-radius: 16px;
         }
 
-        .loader-progress {
+        .modal-image {
+            width: 100%;
             height: 100%;
-            width: 0;
-            background: white;
-            border-radius: 2px;
-            animation: loading 1s ease-out forwards;
+            object-fit: cover;
+            display: block;
         }
 
-        @keyframes loading {
-            to { width: 100%; }
+        .modal-prompt {
+            font-size: 0.8rem;
+            line-height: 1.8;
+            color: var(--text-sub);
+            white-space: pre-wrap;
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: #f8f8f8;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 14px 28px;
+            border: none;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: #fff;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-family: var(--font-main);
+            letter-spacing: 0.05em;
+        }
+
+        .modal-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 201, 212, 0.4);
+        }
+
+        .modal-btn.copied {
+            background: var(--accent-cyan);
+        }
+
+        .close-btn {
+            position: fixed;
+            top: max(1.5rem, env(safe-area-inset-top));
+            right: max(1.5rem, env(safe-area-inset-right));
+            z-index: 20000;
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background-color: var(--accent-pink);
+        }
+
+        .close-btn:hover svg path {
+            stroke: #fff;
+        }
+
+        .close-btn svg {
+            transition: transform 0.5s ease;
+            width: 24px;
+            height: 24px;
+        }
+
+        .close-btn:hover svg {
+            transform: rotate(90deg);
+        }
+
+        /* フッター */
+        .footer-section {
+            background-color: var(--bg-footer);
+            color: #fff;
+            position: relative;
+            padding: 6rem var(--spacing-container) 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-section {
+                padding: 8rem var(--spacing-container-md) 3rem;
+            }
+        }
+
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .footer-link {
+            color: var(--accent-cyan);
+            font-size: 0.875rem;
+            transition: color 0.3s;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-pink);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            font-size: 10px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
     </style>
 </head>
 
 <body>
+
+    <div id="custom-cursor"></div>
+
     <div id="loader">
-        <div class="loader-content">
-            <div class="loader-title">KONMARI prompt</div>
-            <div class="loader-bar">
-                <div class="loader-progress"></div>
-            </div>
+        <div class="loader-text-wrapper">
+            <div class="loader-text">KONMARI prompt</div>
         </div>
     </div>
 
-    <header>
-        <img src="images/IMG_6672.JPG" alt="KONMARI" class="header-img" id="header-img">
-        <div class="header-text">
-            <h1>KONMARI prompt</h1>
-            <p>AIエディター×デザイナー コンマリによる画像変換プロンプト集</p>
-        </div>
-    </header>
+    <div id="app">
 
-    <div class="container">
-        <nav class="sidebar">
-            <ul id="category-nav">
-                <!-- Categories will be injected here -->
-            </ul>
-        </nav>
+        <header class="header-section container-padding">
+            <div class="parallax-bg" data-speed="0.2">
+                PROMPT<br>COLLECTION
+            </div>
 
-        <main>
-            <div class="grid-area">
-                <div class="grid" id="prompt-grid">
-                    <!-- Prompts will be injected here -->
+            <div class="header-content">
+                <img src="images/IMG_6672.JPG" alt="KONMARI" class="header-icon">
+                <p class="user-role">
+                    <span class="reveal-text"><span>AI Image Generation Prompts</span></span>
+                </p>
+                <h1 class="user-name">
+                    <span class="reveal-text"><span>KONMARI</span></span>
+                    <br class="br-mobile">
+                    <span class="reveal-text"><span>prompt</span></span>
+                </h1>
+                <div class="separator-line line-anim"></div>
+                <div class="user-bio-wrapper">
+                    <p class="user-bio">
+                        AIエディター×デザイナー コンマリによる画像変換プロンプト集。あなたの画像を、アクリルLEDスタンド、クリスタル球体LED、ケーキ、アクセサリー、スノードーム、ジンジャーブレッドハウスなどに変換します。</p>
                 </div>
             </div>
-        </main>
+
+            <div class="scroll-indicator">
+                <span class="scroll-text">Scroll</span>
+                <div class="scroll-line"></div>
+            </div>
+        </header>
+
+        <section class="gallery-section section-py container-padding">
+            <div class="section-header">
+                <h2 class="section-title">Prompt Collection</h2>
+                <span class="section-number">01 Prompts</span>
+            </div>
+            <div class="category-tabs" id="category-tabs"></div>
+            <div id="prompts-grid"></div>
+        </section>
+
+        <footer class="footer-section">
+            <div class="footer-content">
+                <h3 class="footer-title">このプロンプト集について</h3>
+                <p class="footer-text">コンマリによる画像変換プロンプト集</p>
+                <div class="footer-links">
+                    <a href="https://note.com/konmari/n/n6f2c0fbffc6c" target="_blank" class="footer-link">note記事を見る</a>
+                    <a href="https://x.com/konmari_tweet" target="_blank" class="footer-link">@konmari_tweet</a>
+                </div>
+                <div class="footer-bottom">
+                    <p>© 2026 コンマリ. Designed for Impact.</p>
+                </div>
+            </div>
+        </footer>
     </div>
 
-    <div id="modal">
-        <div class="modal-container">
-            <button class="btn-close" onclick="closeModal()">
-                <span class="material-icons">close</span>
-            </button>
-            <div class="modal-left">
-                <img id="modal-img" src="" alt="" class="modal-img">
+    <div id="prompt-modal">
+        <div class="close-btn" onclick="closeModal()">
+            <svg viewBox="0 0 60 60" fill="none">
+                <path d="M20 20L40 40M40 20L20 40" stroke="#111" stroke-width="3" stroke-linecap="round" />
+            </svg>
+        </div>
+        <div class="modal-content">
+            <div class="modal-image-wrapper">
+                <img id="modal-image" src="" alt="" class="modal-image">
             </div>
-            <div class="modal-right">
-                <div class="modal-header">
-                    <h2 id="modal-title" class="modal-title"></h2>
-                    <p id="modal-subtitle" class="modal-subtitle"></p>
-                </div>
-                <div id="modal-prompt" class="modal-prompt-box"></div>
-                <div class="modal-actions">
-                    <button class="btn btn-primary" onclick="copyPrompt()">
-                        <span class="material-icons">content_copy</span>
-                        <span id="copy-text">コピー</span>
-                    </button>
-                </div>
+            <h3 id="modal-title" style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--accent-pink);">
+            </h3>
+            <p id="modal-subtitle"
+                style="font-size: 0.875rem; color: var(--text-sub); margin-bottom: 1.5rem; font-style: italic;"></p>
+            <div id="modal-prompt" class="modal-prompt"></div>
+            <div class="modal-actions">
+                <button class="modal-btn link-hover-target" id="modal-copy-btn" onclick="copyModalPrompt()">
+                    <span class="material-icons" style="font-size: 16px;">content_copy</span>
+                    コピー
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        let promptData = null;
-        let currentCategory = null;
-        let currentPrompt = null;
+        const iconMap = {
+            'acrylic-led-stand': 'lightbulb',
+            'crystal-ball-led': 'bubble_chart',
+            'cake': 'cake',
+            'jewelry': 'diamond',
+            'snow-globe': 'ac_unit',
+            'cookie-house': 'home',
+            'knitwear': 'checkroom',
+            'neon-light': 'wb_iridescent',
+            'wreath': 'filter_vintage',
+            'wall-art': 'wallpaper',
+            'character-tree': 'park',
+            'feast': 'restaurant',
+            'pochi-bukuro': 'redeem',
+            'sugoroku': 'casino',
+            'kagami-mochi': 'celebration',
+            'osechi': 'lunch_dining',
+            'lucky-bag': 'shopping_bag',
+            'snowman': 'person'
+        };
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            await init();
+        let promptData = null;
+        let currentCategoryId = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPrompts();
         });
 
-        async function init() {
+        async function loadPrompts() {
             try {
                 const response = await fetch('prompts.json');
                 promptData = await response.json();
 
-                // ヘッダー画像設定
-                if (promptData.headerIcon) {
-                    document.getElementById('header-img').src = promptData.headerIcon;
-                }
-
-                // カテゴリー生成
-                const nav = document.getElementById('category-nav');
+                // カテゴリータブを生成
+                const tabsContainer = document.getElementById('category-tabs');
                 promptData.categories.forEach((cat, index) => {
-                    const li = document.createElement('li');
-                    li.className = 'nav-item';
-                    li.innerHTML = `
-                        <div class="nav-link ${index === 0 ? 'active' : ''}" onclick="switchCategory('${cat.id}', this)">
-                            <span class="material-icons">${getIcon(cat.id)}</span>
-                            <span class="nav-text">${cat.name}</span>
-                        </div>
-                    `;
-                    nav.appendChild(li);
+                    const tab = document.createElement('button');
+                    tab.className = 'category-tab link-hover-target' + (cat.externalLink ? ' external' : '') + (index === 0 ? ' active' : '');
+                    tab.textContent = cat.name;
+                    tab.onclick = () => {
+                        if (cat.externalLink) {
+                            window.open(cat.externalLink, '_blank');
+                        } else {
+                            switchCategory(cat.id, tab);
+                        }
+                    };
+                    tabsContainer.appendChild(tab);
                 });
 
-                // 初期表示（外部リンクでない最初のカテゴリーを選択）
+                // 最初のカテゴリーを表示
                 const firstCategory = promptData.categories.find(c => !c.externalLink && c.prompts && c.prompts.length > 0);
                 if (firstCategory) {
-                    switchCategory(firstCategory.id);
+                    currentCategoryId = firstCategory.id;
+                    renderPrompts(firstCategory.prompts);
                 }
 
-                // ローディング終了
-                setTimeout(() => {
-                    document.getElementById('loader').style.opacity = '0';
-                    setTimeout(() => {
-                        document.getElementById('loader').style.display = 'none';
-                    }, 300);
-                }, 1000);
-
-            } catch (e) {
-                console.error('Failed to load data', e);
-                // エラー時もローダーを非表示に
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loader').style.display = 'none';
-                }, 300);
+                startOpeningAnimation();
+            } catch (error) {
+                console.error('プロンプトの読み込みに失敗しました:', error);
             }
         }
 
-        function getIcon(id) {
-            if (id.includes('christmas')) return 'celebration';
-            if (id.includes('new-year')) return 'auto_awesome';
-            if (id.includes('note')) return 'open_in_new';
-            return 'folder';
+        function switchCategory(categoryId, tabElement) {
+            currentCategoryId = categoryId;
+
+            // タブのアクティブ状態を更新
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            tabElement.classList.add('active');
+
+            // プロンプトを表示
+            const category = promptData.categories.find(c => c.id === categoryId);
+            if (category && category.prompts) {
+                renderPrompts(category.prompts);
+            }
         }
 
-        function switchCategory(catId, el) {
-            const category = promptData.categories.find(c => c.id === catId);
-
-            // 外部リンクの場合は新しいタブで開く
-            if (category.externalLink) {
-                window.open(category.externalLink, '_blank');
-                return;
-            }
-
-            if (el) {
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                el.classList.add('active');
-            }
-
-            currentCategory = category;
-            renderGrid();
-        }
-
-        function renderGrid() {
-            const grid = document.getElementById('prompt-grid');
+        function renderPrompts(prompts) {
+            const grid = document.getElementById('prompts-grid');
             grid.innerHTML = '';
 
-            if (!currentCategory || !currentCategory.prompts) return;
-
-            currentCategory.prompts.forEach((p, i) => {
+            prompts.forEach((prompt, index) => {
                 const card = document.createElement('div');
-                card.className = 'card';
-                card.onclick = () => openModal(p);
-                card.style.animationDelay = `${i * 50}ms`;
+                card.className = 'prompt-card link-hover-target';
                 card.innerHTML = `
-                    <img src="${p.image}" alt="${p.title}" class="card-img">
-                    <div class="card-info">
-                        <h3 class="card-title">${p.title}</h3>
-                        <p class="card-subtitle">${p.subtitle}</p>
+                    <div class="card-image-wrapper">
+                        <img src="${prompt.image}" alt="${prompt.title}" class="card-image" loading="lazy">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">
+                            <span class="material-icons card-icon">${iconMap[prompt.id] || 'star'}</span>
+                            ${prompt.title}
+                        </h3>
+                        <p class="card-subtitle">${prompt.subtitle}</p>
+                        <div class="card-actions">
+                            <button class="btn link-hover-target" onclick="viewPrompt('${prompt.id}')">
+                                <span class="material-icons" style="font-size: 16px;">visibility</span>
+                                View
+                            </button>
+                            <button class="btn link-hover-target" onclick="copyPromptById(this, '${prompt.id}')">
+                                <span class="material-icons" style="font-size: 16px;">content_copy</span>
+                                Copy
+                            </button>
+                        </div>
                     </div>
                 `;
                 grid.appendChild(card);
+
+                // アニメーション
+                setTimeout(() => {
+                    card.classList.add('is-visible');
+                }, index * 100);
             });
         }
 
-        function openModal(prompt) {
-            currentPrompt = prompt;
-            document.getElementById('modal-img').src = prompt.image;
-            document.getElementById('modal-title').textContent = prompt.title;
-            document.getElementById('modal-subtitle').textContent = prompt.subtitle;
-            document.getElementById('modal-prompt').textContent = prompt.prompt;
+        function findPromptById(promptId) {
+            for (const category of promptData.categories) {
+                if (category.prompts) {
+                    const prompt = category.prompts.find(p => p.id === promptId);
+                    if (prompt) return prompt;
+                }
+            }
+            return null;
+        }
 
-            const modal = document.getElementById('modal');
+        function viewPrompt(promptId) {
+            const prompt = findPromptById(promptId);
+            if (prompt) {
+                document.getElementById('modal-image').src = prompt.image;
+                document.getElementById('modal-image').alt = prompt.title;
+                document.getElementById('modal-title').textContent = prompt.title;
+                document.getElementById('modal-subtitle').textContent = prompt.subtitle;
+                document.getElementById('modal-prompt').textContent = prompt.prompt;
+                document.getElementById('modal-copy-btn').dataset.promptId = promptId;
+                openModal();
+            }
+        }
+
+        async function copyPromptById(button, promptId) {
+            const prompt = findPromptById(promptId);
+            if (prompt) {
+                try {
+                    await navigator.clipboard.writeText(prompt.prompt);
+                    const originalHTML = button.innerHTML;
+                    button.classList.add('copied');
+                    button.innerHTML = '<span class="material-icons" style="font-size: 16px;">check</span>Copied!';
+                    setTimeout(() => {
+                        button.classList.remove('copied');
+                        button.innerHTML = originalHTML;
+                    }, 2000);
+                } catch (error) {
+                    console.error('コピーに失敗しました:', error);
+                }
+            }
+        }
+
+        async function copyModalPrompt() {
+            const btn = document.getElementById('modal-copy-btn');
+            const promptId = btn.dataset.promptId;
+            if (promptId) {
+                await copyPromptById(btn, promptId);
+            }
+        }
+
+        function startOpeningAnimation() {
+            const tl = anime.timeline({ easing: 'easeOutExpo' });
+            tl
+                .add({
+                    targets: '.loader-text',
+                    translateY: [100, 0], opacity: [0, 1], duration: 800
+                })
+                .add({
+                    targets: '#loader',
+                    translateY: -window.innerHeight, duration: 1000, easing: 'easeInOutExpo', delay: 200
+                })
+                .add({
+                    targets: '#loader',
+                    duration: 1,
+                    complete: function () {
+                        document.getElementById('loader').style.display = 'none';
+                    }
+                })
+                .add({
+                    targets: '.reveal-text span',
+                    translateY: ['100%', '0%'], opacity: [0, 1], duration: 1000, delay: anime.stagger(100),
+                }, '-=600')
+                .add({
+                    targets: '.line-anim',
+                    scaleX: [0, 1], duration: 800,
+                }, '-=800')
+                .finished.then(() => {
+                    initScrollAnimations();
+                    initCursor();
+                });
+        }
+
+        function initScrollAnimations() {
+            const parallaxBg = document.querySelector('.parallax-bg');
+            window.addEventListener('scroll', () => {
+                const scrolled = window.scrollY;
+                const speed = 0.2;
+                window.requestAnimationFrame(() => {
+                    parallaxBg.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+            });
+        }
+
+        function initCursor() {
+            const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+            if (isTouch) return;
+
+            const cursor = document.getElementById('custom-cursor');
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let cursorX = mouseX;
+            let cursorY = mouseY;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            function animateCursor() {
+                const lerpFactor = 1.0;
+                cursorX += (mouseX - cursorX) * lerpFactor;
+                cursorY += (mouseY - cursorY) * lerpFactor;
+                cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            document.addEventListener('mouseover', (e) => {
+                if (e.target.closest('.link-hover-target') || e.target.closest('a') || e.target.closest('.close-btn')) {
+                    cursor.classList.add('hovered');
+                } else {
+                    cursor.classList.remove('hovered');
+                }
+            });
+        }
+
+        const modal = document.getElementById('prompt-modal');
+
+        function openModal() {
             modal.style.display = 'flex';
+            anime.timeline({ easing: 'easeOutExpo' })
+                .add({ targets: modal, opacity: [0, 1], duration: 400 })
+                .add({ targets: '.modal-content', scale: [0.95, 1], opacity: [0, 1], duration: 600 }, '-=300');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
-            document.getElementById('modal').style.display = 'none';
+            anime.timeline({
+                easing: 'easeInQuad',
+                complete: () => {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            })
+                .add({ targets: '.modal-content', scale: 0.95, opacity: 0, duration: 300 })
+                .add({ targets: modal, opacity: 0, duration: 300 }, '-=200');
         }
-
-        async function copyPrompt() {
-            if (!currentPrompt) return;
-            try {
-                await navigator.clipboard.writeText(currentPrompt.prompt);
-                const text = document.getElementById('copy-text');
-                text.textContent = 'コピーしました!';
-
-                setTimeout(() => {
-                    text.textContent = 'コピー';
-                }, 2000);
-            } catch (err) {
-                console.error('Copy failed', err);
-            }
-        }
-
-        // モーダル外クリックで閉じる
-        document.getElementById('modal').addEventListener('click', (e) => {
-            if (e.target.id === 'modal') {
-                closeModal();
-            }
-        });
-
-        // ESCキーでモーダル閉じる
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
     </script>
 </body>
 
