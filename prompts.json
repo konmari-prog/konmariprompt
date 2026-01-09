@@ -1,0 +1,50 @@
+{
+  "title": "Nano Banana Proクリスマスプロンプト集前編",
+  "description": "クリスマスをテーマにした画像変換プロンプト集",
+  "author": "コンマリ",
+  "source": "https://note.com/konmari/n/nf7ba5e67fa76",
+  "prompts": [
+    {
+      "id": "acrylic-led-stand",
+      "title": "アクリルLEDスタンド編",
+      "subtitle": "Image-to-Acrylic LED stand",
+      "image": "images/acrylic_led_stand.jpg",
+      "prompt": "# Role & Objective\nYou are an expert product photographer and digital artist. Your task is to analyze the attached source image and recreate it as a \"Premium Laser-Engraved Acrylic LED Stand\" product photo.\n\n# Process\n1. **ANALYZE** the source image to identify the [Main Subject] (e.g., person, pet, object) and the [Mood] (e.g., sentimental, energetic, calm).\n2. **CONVERT** the visual style:\n   - Transform the [Main Subject] into a **pure glowing line-art sketch** (Monochrome golden light, NO original colors, NO filled paint).\n   - Create **\"Embellishments\"**: Generate artistic handwritten typography, doodles (e.g., hearts, stars, abstract shapes, or speech bubbles), and decorative strokes that surround the subject. These must thematically match the detected [Mood].\n3. **COMPOSE** the final product photography scene using the template below.\n\n# Image Generation Template\n\"Macro commercial product photography of a thick, die-cut clear acrylic stand light.\n\n**The Art:** The acrylic surface features a laser-engraved, glowing golden line-art sketch of [Detected Main Subject] from the source image. It is surrounded by **Christmas-themed decorative elements (e.g., snowflakes, holly leaves, stars, reindeer silhouettes, and \"Merry Christmas\" or \"Noel\" handwritten script)** that complement the subject. The engraving glows brightly with warm edge-lighting.\n\n**The Base:** A rustic wooden LED base holding the acrylic.\n\n**The Setting:** A luxurious, dim interior background with **[Christmas Decor Props: e.g., pine branches with red berries, glittering ornaments, warm fairy lights, pinecones, and ribbon] creating a cozy, festive atmosphere.**\n\n**The Vibe:** High contrast, photorealistic, 8k, f/1.8 shallow depth of field, magical and emotional atmosphere. The light from the stand illuminates the surroundings.\"\n\n# Execution\nGenerate the image based on this analysis."
+    },
+    {
+      "id": "crystal-ball-led",
+      "title": "クリスタル球体LED編",
+      "subtitle": "Image-to-Crystal ball LED light",
+      "image": "images/crystal_ball_led.jpg",
+      "prompt": "[AI指示: 入力された画像参照を優先し、その特定の要素を指定された製品写真に正確に統合してください。]\n\n**Macro Commercial Product Photography** of a premium, ultra-clear **crystal ball LED light**.\n\nThe spherical glass surface precisely features the **exact glowing warm golden laser-engraved line art and handwritten typography decorations derived from image_0.png** (profile of woman with glasses, hearts, sparkles, and text). These engravings are perfectly mapped onto the curved surface, showing natural perspective distortion and conforming seamlessly to the sphere's geometry.\n\n[Lighting & Material]: The laser engraving glows intensely with warm golden light supplied from the base within the glass, making the lines pop with a neon-like brilliance against the dark environment. The crystal ball itself possesses high clarity and substantial weight, showcasing beautiful internal light refraction, caustic patterns cast on the base, and a warm inner glow.\n\n[Base & Environment]: The sphere rests securely in a **concave wooden LED base**, replicating the specific style, wood grain, and warm under-glow illumination seen in **image_1.png**. The background is a **sumptuous, warm, richly textured out-of-focus arrangement of {dried botanical bouquets, vintage leather books, warm fairy lights, antique decorative glass ornaments}** creating a beautiful, creamy bokeh and a luxurious, cozy atmosphere.\n\n[Quality & Composition]: Photorealistic, 8k resolution, incredibly sharp detail on the engraved texture and wood grain. Shallow depth of field (f/1.8 macro lens), focusing sharply on the front of the crystal sphere. Rich textures, dramatic lighting, high-end commercial look."
+    },
+    {
+      "id": "cake",
+      "title": "特注ケーキ編",
+      "subtitle": "Image-to-Cake",
+      "image": "images/cake.jpg",
+      "prompt": "**[AI Instruction: Image-to-Edible Art]**\n\nAnalyze the provided **[Input Image]**.\n\n1. **Flavor & Palette:** Extract the dominant colors to determine the cake's flavor theme (e.g., Pink=Strawberry, Brown=Chocolate, Blue=Vanilla/Mint) and icing colors.\n2. **Edible Motif:** Transform the main character or object in the [Input Image] into a high-quality **edible cake topper** (e.g., detailed fondant figure, royal icing cookie, or chocolate sculpture).\n\n**[Main Subject]**\nA delicious, high-end **Designer Birthday Cake** placed on a ceramic cake stand. The design is celebratory, sweet, and perfectly color-coordinated with the input image.\n\n**[Thematic Decoration]**\n* **The Topper:** The [Input Image] subject sits proudly on top as a cute, edible decoration. It retains the original design but looks distinctively made of sugar or chocolate.\n* **Details:** Decorated with piped buttercream swirls, fresh fruits, macarons, sprinkles, and edible pearls that match the [Input Image]'s color palette.\n* **Texture:** Soft sponge, glossy ganache drip, fluffy whipped cream.\n\n**[Atmosphere]**\nBright café lighting, mouth-watering food photography, 8k resolution, macro shot focusing on the details of the sweets."
+    },
+    {
+      "id": "jewelry",
+      "title": "アクセサリー編",
+      "subtitle": "Image-to-Jewelry",
+      "image": "images/jewelry.jpg",
+      "prompt": "**[AI Instruction: Image-to-Jewelry Translation]**\n\nAnalyze the provided **[Input Image]**.\n\n1. **Material Translation:** Translate the lines and colors of the [Input Image] into a **luxury jewelry piece**. Lines become gold/silver wire frames, and colors become enamel (cloisonné), stained glass, or embedded gemstones.\n2. **Form:** Keep the silhouette of the [Input Image] subject but render it as a solid, wearable object.\n\n**[Main Subject]**\nA macro photograph of an exquisite **Handcrafted Enamel Brooch (or Pendant)** resting on a piece of velvet fabric or silk.\n\n**[Craftsmanship & Materials]**\n* **The Design:** The [Input Image] subject is recreated as a piece of fine jewelry. It looks expensive, shiny, and three-dimensional.\n* **Metals:** The outlines are gleaming **gold or rose gold filigree**.\n* **Inlay:** The colored areas are filled with glossy, translucent enamel or set with tiny diamonds and sapphires that match the original image's colors.\n\n**[Atmosphere]**\nStudio jewelry photography, sparkling light reflections, sharp focus on the metal and gem textures, luxurious and elegant mood."
+    },
+    {
+      "id": "snow-globe",
+      "title": "スノードーム編",
+      "subtitle": "Image-to-Snow Globe",
+      "image": "images/snow_globe.jpg",
+      "prompt": "**[AI Instruction: Atmospheric Masterpiece]**\n\nAnalyze the provided **[Input Image]**.\n\n1. **Diorama Translation:** Translate the [Input Image] subject into a high-fidelity 3D miniature inside the glass.\n2. **Color Harmony:** Use the dominant colors from the [Input Image] to dictate the color of the ambient lighting and background props, ensuring a perfect aesthetic match.\n\n**[Main Subject: The Glowing Snow Globe]**\nA macro, commercial-grade photograph of a magical **Crystal Snow Globe** sitting on a textured surface. The glass is perfectly clear and spherical, creating beautiful reflections.\n\n* **Inside:** A detailed, artistic miniature scene derived from the [Input Image] is the focal point. Swirling glitter and faux snow capture the light.\n\n**[Background & Staging (Designed to make the subject POP)]**\nThe background is a **stylish, out-of-focus winter wonderland** that frames the snow globe perfectly.\n\n* **Setting:** Placed on a rustic wooden windowsill or a velvet runner near a frosted window at twilight.\n* **Bokeh Effect:** The background features **beautiful, creamy bokeh** from warm fairy lights, a distant lit-up Christmas tree, or city lights outside the window.\n* **Props:** A few stylish, non-intrusive props surround the base to add atmosphere without stealing focus (e.g., an antique book, a few scattered pine cones, a flickering tea light candle).\n\n**[Lighting & Atmosphere]**\n* **Cinematic Lighting:** The snow globe is back-lit or side-lit to make the glass rim glow and the internal glitter sparkle intensely.\n* **Mood:** Cozy, nostalgic, premium, and magical.\n* **Quality:** 8k resolution, shallow depth of field (f/1.8), ray-tracing reflections, photorealistic."
+    },
+    {
+      "id": "cookie-house",
+      "title": "ジンジャーブレッドハウス編",
+      "subtitle": "Image-to-Cookie House",
+      "image": "images/cookie_house.jpg",
+      "prompt": "**[AI Instruction: Edible Architecture]**\n\nAnalyze the provided **[Input Image]**.\n\n1. **Pattern to Piping:** Translate the patterns, textures, or clothing designs from the [Input Image] into royal icing decorations and candy placement on the house walls.\n2. **Color Scheme:** The entire house's decoration (candies, gumdrops, frosting) must strictly follow the color palette of the [Input Image].\n\n**[Main Subject]**\nA highly detailed, elaborate **Gingerbread House** center-piece, looking delicious and handmade.\n\n**[Construction & Decoration]**\n* **Walls & Roof:** Made of textured gingerbread cookies, cemented with thick white royal icing snow.\n* **Thematic Details:** The facade is heavily decorated with patterns inspired by the [Input Image] using colored icing, small candies, pretzels, and stained-glass windows made of melted hard candy.\n* **Characters:** Small gingerbread men or cookie figures resembling the subject of the [Input Image] are posed around the house.\n\n**[Atmosphere]**\nWarm holiday lighting, cozy kitchen setting, smells sweet, photorealistic food photography, macro details on sugar textures."
+    }
+  ]
+}
