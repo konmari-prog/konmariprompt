@@ -121,141 +121,96 @@
         /* ========== ヒーローセクション ========== */
         .hero {
             min-height: 100dvh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+        }
+
+        .hero-left {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            background: var(--card-bg);
+            padding: 8rem 4rem 4rem 6rem;
         }
 
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-        }
-
-        .hero-gradient {
-            position: absolute;
-            width: 800px;
-            height: 800px;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.4;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        .hero-gradient-1 {
-            background: var(--cyan);
-            top: -20%;
-            left: -10%;
-        }
-
-        .hero-gradient-2 {
-            background: var(--magenta);
-            bottom: -30%;
-            right: -10%;
-            animation-delay: -10s;
-        }
-
-        .hero-gradient-3 {
-            background: var(--yellow);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            opacity: 0.2;
-            animation-delay: -5s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.05); }
-            66% { transform: translate(-20px, 20px) scale(0.95); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            padding: 2rem;
-            max-width: 800px;
-        }
-
-        .hero-profile {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            border: 4px solid white;
-            transition: transform 0.4s var(--ease);
-        }
-
-        .hero-profile:hover {
-            transform: scale(1.05);
+        @media (max-width: 900px) {
+            .hero-left {
+                padding: 8rem 2rem 3rem;
+                text-align: center;
+            }
         }
 
         .hero-label {
-            display: inline-block;
             font-family: 'Quicksand', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
-            color: var(--text-light);
+            color: var(--cyan);
             margin-bottom: 1.5rem;
-            padding: 0.5rem 1.5rem;
-            background: rgba(0, 212, 232, 0.1);
-            border-radius: 30px;
         }
 
         .hero-title {
             font-family: 'Quicksand', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
             font-weight: 700;
-            background: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 50%, var(--pink) 100%);
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
         }
 
         .hero-desc {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--text-light);
-            max-width: 500px;
-            margin: 0 auto 3rem;
-            line-height: 2;
+            max-width: 400px;
+            margin-bottom: 2.5rem;
+            line-height: 1.9;
+        }
+
+        @media (max-width: 900px) {
+            .hero-desc {
+                margin: 0 auto 2.5rem;
+            }
         }
 
         .hero-cta {
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 2.5rem;
-            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--text);
             color: white;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 4px;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.4s var(--ease);
-            box-shadow: 0 10px 40px rgba(0, 212, 232, 0.3);
+            font-size: 0.85rem;
+            transition: all 0.3s var(--ease);
         }
 
         .hero-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 50px rgba(0, 212, 232, 0.4);
+            background: var(--cyan);
+            transform: translateY(-2px);
         }
 
         .hero-cta .material-icons {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: transform 0.3s var(--ease);
         }
 
@@ -263,22 +218,110 @@
             transform: translateX(4px);
         }
 
-        .scroll-indicator {
+        .hero-right {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 6rem 3rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+        }
+
+        @media (max-width: 900px) {
+            .hero-right {
+                padding: 2rem;
+                min-height: 400px;
+            }
+        }
+
+        .hero-image-item {
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.4s var(--ease);
+        }
+
+        .hero-image-item:hover {
+            transform: scale(1.03);
+            z-index: 2;
+        }
+
+        .hero-image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-image-item:nth-child(1) {
+            grid-row: span 2;
+        }
+
+        .hero-profile-badge {
             position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
+            bottom: 2rem;
+            left: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 60px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        @media (max-width: 900px) {
+            .hero-profile-badge {
+                bottom: 1rem;
+                left: 1rem;
+                padding: 0.75rem 1rem;
+            }
+        }
+
+        .hero-profile-badge img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .hero-profile-badge .info {
             display: flex;
             flex-direction: column;
+        }
+
+        .hero-profile-badge .name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .hero-profile-badge .role {
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 4rem;
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
             color: var(--text-light);
             font-size: 0.7rem;
             font-weight: 500;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
             cursor: pointer;
-            opacity: 0.6;
+            opacity: 0.5;
             transition: opacity 0.3s;
+        }
+
+        @media (max-width: 900px) {
+            .scroll-indicator {
+                display: none;
+            }
         }
 
         .scroll-indicator:hover {
@@ -286,15 +329,27 @@
         }
 
         .scroll-indicator .line {
-            width: 1px;
-            height: 50px;
-            background: linear-gradient(to bottom, var(--cyan), transparent);
+            width: 60px;
+            height: 1px;
+            background: var(--text-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-indicator .line::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 100%;
+            background: var(--cyan);
             animation: scrollLine 2s ease-in-out infinite;
         }
 
         @keyframes scrollLine {
-            0%, 100% { transform: scaleY(1); opacity: 1; }
-            50% { transform: scaleY(0.5); opacity: 0.5; }
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
         }
 
         /* ========== メインセクション ========== */
@@ -877,21 +932,33 @@
 
     <!-- ヒーローセクション -->
     <section class="hero">
-        <div class="hero-bg">
-            <div class="hero-gradient hero-gradient-1"></div>
-            <div class="hero-gradient hero-gradient-2"></div>
-            <div class="hero-gradient hero-gradient-3"></div>
-        </div>
-
-        <div class="hero-content">
-            <img src="images/IMG_6672.JPG" alt="KONMARI" class="hero-profile">
+        <div class="hero-left">
             <div class="hero-label">AI Image Prompt Collection</div>
-            <h1 class="hero-title">KONMARI prompt</h1>
+            <h1 class="hero-title">Transform your<br>images with<br><span>AI prompts</span></h1>
             <p class="hero-desc">AIエディター×デザイナー コンマリによる画像変換プロンプト集。あなたの画像を素敵なアートに変換します。</p>
             <a href="#prompts" class="hero-cta">
-                プロンプトを見る
+                View Prompts
                 <span class="material-icons">arrow_forward</span>
             </a>
+        </div>
+
+        <div class="hero-right">
+            <div class="hero-image-item">
+                <img src="images/acrylic_led_stand.png" alt="Sample 1">
+            </div>
+            <div class="hero-image-item">
+                <img src="images/wreath.png" alt="Sample 2">
+            </div>
+            <div class="hero-image-item">
+                <img src="images/kagami_mochi.png" alt="Sample 3">
+            </div>
+            <div class="hero-profile-badge">
+                <img src="images/IMG_6672.JPG" alt="KONMARI">
+                <div class="info">
+                    <span class="name">KONMARI</span>
+                    <span class="role">AI Editor × Designer</span>
+                </div>
+            </div>
         </div>
 
         <div class="scroll-indicator" onclick="document.getElementById('prompts').scrollIntoView({behavior: 'smooth'})">
