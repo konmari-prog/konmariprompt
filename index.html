@@ -520,9 +520,9 @@
         }
 
         .modal-content {
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
-            max-height: 80vh;
+            max-height: 85vh;
             overflow-y: auto;
             background-color: #fff;
             padding: 3rem;
@@ -531,12 +531,65 @@
             opacity: 0;
         }
 
+        .modal-image-wrapper {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background-color: #e5e7eb;
+            margin-bottom: 2rem;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
         .modal-prompt {
             font-size: 0.875rem;
             line-height: 1.8;
             color: var(--text-sub);
             white-space: pre-wrap;
             font-family: 'Consolas', 'Monaco', monospace;
+            background-color: #f8f8f8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 12px 24px;
+            border: 1px solid var(--accent-red);
+            background-color: var(--accent-red);
+            color: #fff;
+            border-radius: 0;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-family: var(--font-main);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .modal-btn:hover {
+            background-color: #b91c1c;
+            border-color: #b91c1c;
+        }
+
+        .modal-btn.copied {
+            background-color: var(--accent-green);
+            border-color: var(--accent-green);
         }
 
         .close-btn {
@@ -702,10 +755,20 @@
             </svg>
         </div>
         <div class="modal-content">
-            <h3 id="modal-title" style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 1rem;"></h3>
+            <div class="modal-image-wrapper">
+                <img id="modal-image" src="" alt="" class="modal-image">
+            </div>
+            <h3 id="modal-title" style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.5rem;">
+            </h3>
             <p id="modal-subtitle"
-                style="font-size: 0.875rem; color: var(--text-sub); margin-bottom: 2rem; font-style: italic;"></p>
+                style="font-size: 0.875rem; color: var(--text-sub); margin-bottom: 1.5rem; font-style: italic;"></p>
             <div id="modal-prompt" class="modal-prompt"></div>
+            <div class="modal-actions">
+                <button class="modal-btn link-hover-target" id="modal-copy-btn" onclick="copyModalPrompt()">
+                    <span class="material-icons" style="font-size: 16px;">content_copy</span>
+                    Copy Prompt
+                </button>
+            </div>
         </div>
     </div>
 
@@ -770,9 +833,15 @@
                 const prompt = data.prompts.find(p => p.id === promptId);
 
                 if (prompt) {
+                    document.getElementById('modal-image').src = prompt.image;
+                    document.getElementById('modal-image').alt = prompt.title;
                     document.getElementById('modal-title').textContent = prompt.title;
                     document.getElementById('modal-subtitle').textContent = prompt.subtitle;
                     document.getElementById('modal-prompt').textContent = prompt.prompt;
+
+                    // モーダルコピーボタンにprompIdを保存
+                    document.getElementById('modal-copy-btn').dataset.promptId = promptId;
+
                     openModal();
                 }
             } catch (error) {
@@ -801,6 +870,13 @@
             } catch (error) {
                 console.error('コピーに失敗しました:', error);
                 alert('プロンプトのコピーに失敗しました');
+            }
+        }
+        async function copyModalPrompt() {
+            const btn = document.getElementById('modal-copy-btn');
+            const promptId = btn.dataset.promptId;
+            if (promptId) {
+                await copyPrompt(btn, promptId);
             }
         }
 
