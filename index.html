@@ -256,6 +256,38 @@
             background: linear-gradient(135deg, var(--purple), var(--magenta));
         }
 
+        .category-tab.favorites {
+            border-color: var(--pink);
+            color: var(--pink);
+        }
+
+        .category-tab.favorites:hover, .category-tab.favorites.active {
+            background: linear-gradient(135deg, var(--pink), #ef4444);
+        }
+
+        /* お気に入り空状態 */
+        .empty-favorites {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+
+        .empty-favorites .material-icons {
+            font-size: 4rem;
+            color: var(--pink);
+            margin-bottom: 1rem;
+        }
+
+        .empty-favorites p {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-favorites small {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
         /* プロンプトグリッド - 一画面レイアウト */
         .prompts-grid {
             display: grid;
@@ -853,6 +885,18 @@
 
                 // カテゴリータブ生成
                 const tabs = document.getElementById('category-tabs');
+
+                // お気に入りタブを最初に追加
+                const favTab = document.createElement('button');
+                favTab.className = 'category-tab favorites';
+                favTab.innerHTML = '<span class="material-icons" style="font-size:1rem;vertical-align:middle;margin-right:0.3rem;">favorite</span>お気に入り';
+                favTab.onclick = () => {
+                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                    favTab.classList.add('active');
+                    renderFavorites();
+                };
+                tabs.appendChild(favTab);
+
                 promptData.categories.forEach((cat, i) => {
                     const tab = document.createElement('button');
                     tab.className = 'category-tab' + (cat.externalLink ? ' external' : '') + (i === 0 ? ' active' : '');
@@ -1022,16 +1066,63 @@
             }
         }
 
-        // Xシェア機能
-        function shareToX() {
+        // お気に入り一覧表示
+        function renderFavorites() {
+            const grid = document.getElementById('prompts-grid');
+            grid.innerHTML = '';
+
+            if (favorites.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-favorites" style="grid-column: 1 / -1;">
+                        <span class="material-icons">favorite_border</span>
+                        <p>お気に入りがありません</p>
+                        <small>プロンプトの詳細画面から追加できます</small>
+                    </div>
+                `;
+                return;
+            }
+
+            const favPrompts = favorites.map(id => findPrompt(id)).filter(p => p);
+            renderPrompts(favPrompts);
+        }
+
+        // Xシェア機能（画像付き）
+        async function shareToX() {
             if (!currentPrompt) return;
 
-            const text = `【${currentPrompt.title}】\n${currentPrompt.subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう✨\n`;
-            const url = window.location.href;
-            const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+            // 画像をBlobとしてダウンロードしてクリップボードにコピー
+            try {
+                showToast('画像を準備中...');
 
-            window.open(xUrl, '_blank', 'width=550,height=420');
-            showToast('Xでシェアします');
+                // 画像をfetchしてBlobに変換
+                const response = await fetch(currentPrompt.image);
+                const blob = await response.blob();
+
+                // クリップボードに画像をコピー（対応ブラウザのみ）
+                if (navigator.clipboard && navigator.clipboard.write) {
+                    const clipboardItem = new ClipboardItem({ [blob.type]: blob });
+                    await navigator.clipboard.write([clipboardItem]);
+                    showToast('画像をコピーしました！Xに貼り付けてください');
+                }
+
+                // X投稿画面を開く
+                const text = `【${currentPrompt.title}】\n${currentPrompt.subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう✨\n\n#KONMARIprompt #AI画像生成`;
+                const url = 'https://konmari-prog.github.io/konmariprompt/';
+                const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+
+                setTimeout(() => {
+                    window.open(xUrl, '_blank', 'width=550,height=520');
+                }, 500);
+
+            } catch (e) {
+                console.error('Share failed:', e);
+                // フォールバック: 画像なしでシェア
+                const text = `【${currentPrompt.title}】\n${currentPrompt.subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう✨\n\n#KONMARIprompt #AI画像生成`;
+                const url = 'https://konmari-prog.github.io/konmariprompt/';
+                const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+                window.open(xUrl, '_blank', 'width=550,height=520');
+                showToast('Xでシェアします');
+            }
         }
 
         // トースト通知
