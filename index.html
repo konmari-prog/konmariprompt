@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#ffffff">
-    <meta name="version" content="3.0">
+    <meta name="version" content="4.0">
 
     <title>KONMARI prompt</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
@@ -20,8 +20,11 @@
             --yellow: #FFEB00;
             --pink: #FF6B9D;
             --purple: #9B7ED9;
-            --bg: #ffffff;
-            --text: #333;
+            --bg: #fafafa;
+            --text: #2d2d2d;
+            --text-light: #666;
+            --card-bg: #ffffff;
+            --ease: cubic-bezier(.4, .4, 0, 1);
         }
 
         * {
@@ -30,117 +33,147 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Zen Maru Gothic', sans-serif;
+            font-family: 'Zen Maru Gothic', 'Quicksand', sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* ヘッダー - ポップで透明感のあるデザイン */
+        /* ========== ヘッダーナビ ========== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s var(--ease);
+        }
+
+        .nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1rem 3rem;
+            box-shadow: 0 2px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-logo {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.3s var(--ease);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            transition: width 0.3s var(--ease);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 1rem 1.5rem;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* ========== ヒーローセクション ========== */
         .hero {
-            min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg,
-                rgba(0, 212, 232, 0.1) 0%,
-                rgba(255, 0, 255, 0.05) 50%,
-                rgba(255, 235, 0, 0.1) 100%);
+            background: var(--card-bg);
         }
 
-        /* 背景の幾何学模様 */
-        .geo-shapes {
+        .hero-bg {
             position: absolute;
             inset: 0;
-            pointer-events: none;
             overflow: hidden;
         }
 
-        .shape {
+        .hero-gradient {
             position: absolute;
+            width: 800px;
+            height: 800px;
             border-radius: 50%;
-            opacity: 0.6;
-        }
-
-        .shape-1 {
-            width: 300px;
-            height: 300px;
-            background: var(--cyan);
-            top: -100px;
-            left: -100px;
-            filter: blur(0px);
-        }
-
-        .shape-2 {
-            width: 200px;
-            height: 200px;
-            background: var(--yellow);
-            top: 20%;
-            right: 10%;
-            border-radius: 0;
-            transform: rotate(15deg);
-        }
-
-        .shape-3 {
-            width: 150px;
-            height: 150px;
-            background: var(--magenta);
-            bottom: 20%;
-            left: 5%;
+            filter: blur(120px);
             opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
         }
 
-        .shape-4 {
-            width: 100px;
-            height: 100px;
+        .hero-gradient-1 {
             background: var(--cyan);
-            bottom: 10%;
-            right: 20%;
-            border-radius: 0;
-            transform: rotate(45deg);
+            top: -20%;
+            left: -10%;
         }
 
-        .shape-5 {
-            width: 80px;
-            height: 80px;
-            border: 4px solid var(--magenta);
-            background: transparent;
-            top: 30%;
-            left: 15%;
-            border-radius: 0;
+        .hero-gradient-2 {
+            background: var(--magenta);
+            bottom: -30%;
+            right: -10%;
+            animation-delay: -10s;
         }
 
-        .shape-6 {
-            width: 120px;
-            height: 120px;
-            border: 4px solid var(--cyan);
-            background: transparent;
-            bottom: 30%;
-            right: 5%;
+        .hero-gradient-3 {
+            background: var(--yellow);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            opacity: 0.2;
+            animation-delay: -5s;
         }
 
-        /* ドットパターン */
-        .dots {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background-image: radial-gradient(circle, #333 2px, transparent 2px);
-            background-size: 12px 12px;
-        }
-
-        .dots-1 {
-            top: 15%;
-            right: 25%;
-        }
-
-        .dots-2 {
-            bottom: 25%;
-            left: 20%;
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
         }
 
         .hero-content {
@@ -148,296 +181,374 @@
             z-index: 10;
             text-align: center;
             padding: 2rem;
+            max-width: 800px;
         }
 
-        .hero-icon {
-            width: 150px;
-            height: 150px;
+        .hero-profile {
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             object-fit: cover;
-            border: 5px solid white;
-            box-shadow:
-                0 0 0 3px var(--cyan),
-                0 0 0 6px var(--magenta),
-                0 20px 60px rgba(0, 0, 0, 0.15);
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 4px solid white;
+            transition: transform 0.4s var(--ease);
+        }
+
+        .hero-profile:hover {
+            transform: scale(1.05);
+        }
+
+        .hero-label {
+            display: inline-block;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(0, 212, 232, 0.1);
+            border-radius: 30px;
         }
 
         .hero-title {
-            font-size: 4rem;
+            font-family: 'Quicksand', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
             font-weight: 700;
-            background: linear-gradient(135deg, var(--cyan), var(--magenta), var(--yellow));
+            background: linear-gradient(135deg, var(--cyan) 0%, var(--magenta) 50%, var(--pink) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
         }
 
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-        }
-
-        .hero-subtitle {
-            font-size: 1.1rem;
-            color: #666;
+        .hero-desc {
+            font-size: 1rem;
+            color: var(--text-light);
             max-width: 500px;
-            margin: 0 auto 2rem;
-            line-height: 1.8;
+            margin: 0 auto 3rem;
+            line-height: 2;
         }
 
-        .scroll-btn {
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.4s var(--ease);
+            box-shadow: 0 10px 40px rgba(0, 212, 232, 0.3);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(0, 212, 232, 0.4);
+        }
+
+        .hero-cta .material-icons {
+            font-size: 1.2rem;
+            transition: transform 0.3s var(--ease);
+        }
+
+        .hero-cta:hover .material-icons {
+            transform: translateX(4px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
-            color: var(--cyan);
-            font-size: 0.8rem;
-            font-weight: 700;
+            color: var(--text-light);
+            font-size: 0.7rem;
+            font-weight: 500;
             letter-spacing: 0.1em;
             cursor: pointer;
-            animation: bounce 2s infinite;
+            opacity: 0.6;
+            transition: opacity 0.3s;
         }
 
-        .scroll-btn .material-icons {
-            font-size: 2rem;
+        .scroll-indicator:hover {
+            opacity: 1;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(10px); }
+        .scroll-indicator .line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--cyan), transparent);
+            animation: scrollLine 2s ease-in-out infinite;
         }
 
-        /* メインコンテンツ */
-        .main-content {
-            padding: 4rem 2rem;
+        @keyframes scrollLine {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.5); opacity: 0.5; }
+        }
+
+        /* ========== メインセクション ========== */
+        .main-section {
+            padding: 8rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* カテゴリータブ */
-        .category-tabs {
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            color: var(--text-light);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* ========== カテゴリーナビ ========== */
+        .category-nav {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 3rem;
+            gap: 0.75rem;
+            margin-bottom: 4rem;
             flex-wrap: wrap;
             justify-content: center;
         }
 
-        .category-tab {
-            padding: 0.8rem 2rem;
-            border: 3px solid var(--cyan);
-            background: white;
+        .category-btn {
+            padding: 0.75rem 1.75rem;
+            border: none;
+            background: var(--card-bg);
             border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 700;
+            font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s var(--ease);
             font-family: inherit;
-            color: var(--cyan);
+            color: var(--text-light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
         }
 
-        .category-tab:hover, .category-tab.active {
+        .category-btn:hover {
+            color: var(--text);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
             background: linear-gradient(135deg, var(--cyan), var(--magenta));
-            border-color: transparent;
             color: white;
-            transform: scale(1.05);
             box-shadow: 0 10px 30px rgba(0, 212, 232, 0.3);
         }
 
-        .category-tab.external {
-            border-color: var(--purple);
+        .category-btn.favorites {
+            color: var(--pink);
+        }
+
+        .category-btn.favorites.active {
+            background: linear-gradient(135deg, var(--pink), var(--magenta));
+        }
+
+        .category-btn.external {
             color: var(--purple);
         }
 
-        .category-tab.external:hover {
-            background: linear-gradient(135deg, var(--purple), var(--magenta));
-        }
-
-        .category-tab.favorites {
-            border-color: var(--pink);
-            color: var(--pink);
-        }
-
-        .category-tab.favorites:hover, .category-tab.favorites.active {
-            background: linear-gradient(135deg, var(--pink), #ef4444);
-        }
-
-        /* お気に入り空状態 */
-        .empty-favorites {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: #999;
-        }
-
-        .empty-favorites .material-icons {
-            font-size: 4rem;
-            color: var(--pink);
-            margin-bottom: 1rem;
-        }
-
-        .empty-favorites p {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .empty-favorites small {
-            font-size: 0.85rem;
-            opacity: 0.7;
-        }
-
-        /* プロンプトグリッド - 一画面レイアウト */
-        .prompts-grid {
+        /* ========== カードグリッド ========== */
+        .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 2rem;
         }
 
-        @media (max-width: 500px) {
-            .prompts-grid {
+        @media (max-width: 400px) {
+            .cards-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        .prompt-card {
-            background: white;
+        .card {
+            background: var(--card-bg);
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            display: grid;
-            grid-template-columns: 180px 1fr;
-            min-height: 220px;
+            transition: all 0.4s var(--ease);
+            cursor: pointer;
+            position: relative;
         }
 
-        @media (max-width: 600px) {
-            .prompt-card {
-                grid-template-columns: 1fr;
-                min-height: auto;
-            }
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            opacity: 0;
+            transition: opacity 0.4s var(--ease);
+            z-index: 0;
         }
 
-        .prompt-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .card:hover::before {
+            opacity: 0.03;
+        }
+
+        .card-image-wrap {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
         }
 
         .card-image {
             width: 100%;
             height: 100%;
-            min-height: 180px;
             object-fit: cover;
+            transition: transform 0.6s var(--ease);
         }
 
-        @media (max-width: 600px) {
-            .card-image {
-                height: 200px;
-            }
+        .card:hover .card-image {
+            transform: scale(1.05);
         }
 
-        .card-content {
-            padding: 1.2rem;
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s var(--ease);
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            align-items: flex-end;
+            padding: 1.5rem;
         }
 
-        .card-header {
+        .card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .card-quick-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .quick-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: white;
+            border: none;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s var(--ease);
+            color: var(--text);
         }
 
-        .card-icon {
-            font-size: 1.5rem;
-            background: linear-gradient(135deg, var(--cyan), var(--magenta));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .quick-btn:hover {
+            background: var(--cyan);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .quick-btn .material-icons {
+            font-size: 1.2rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-category {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
         }
 
         .card-title {
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--text);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
         }
 
         .card-subtitle {
-            font-size: 0.75rem;
-            color: #999;
-            font-style: italic;
-            margin-bottom: 0.8rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            line-height: 1.6;
         }
 
-        .card-prompt {
-            font-size: 0.7rem;
-            color: #666;
-            line-height: 1.5;
-            background: #f8f8f8;
-            padding: 0.8rem;
-            border-radius: 10px;
-            max-height: 80px;
-            overflow-y: auto;
-            margin-bottom: 1rem;
-            font-family: 'Consolas', monospace;
+        /* お気に入り空状態 */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 6rem 2rem;
         }
 
-        .card-actions {
-            display: flex;
-            gap: 0.5rem;
+        .empty-state .material-icons {
+            font-size: 4rem;
+            color: var(--pink);
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
         }
 
-        .btn {
-            flex: 1;
-            padding: 0.7rem 1rem;
-            border: 2px solid var(--cyan);
-            background: white;
-            border-radius: 25px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.3rem;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            color: var(--cyan);
+        .empty-state h3 {
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
         }
 
-        .btn:hover {
-            background: linear-gradient(135deg, var(--cyan), var(--magenta));
-            border-color: transparent;
-            color: white;
+        .empty-state p {
+            color: var(--text-light);
+            font-size: 0.9rem;
         }
 
-        .btn .material-icons {
-            font-size: 1rem;
-        }
-
-        .btn.copied {
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-color: transparent;
-            color: white;
-        }
-
-        /* モーダル - プロ級UI */
+        /* ========== モーダル ========== */
         #modal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 1000;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            padding: 2rem;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s var(--ease);
         }
 
         #modal.show {
@@ -445,19 +556,17 @@
         }
 
         .modal-content {
-            background: white;
+            background: var(--card-bg);
             width: 100%;
-            max-width: 1100px;
-            height: 90vh;
-            max-height: 700px;
+            max-width: 1000px;
+            max-height: 90vh;
             border-radius: 24px;
             display: grid;
-            grid-template-columns: 45% 55%;
+            grid-template-columns: 1fr 1fr;
             overflow: hidden;
             position: relative;
-            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.4);
-            transform: scale(0.9) translateY(20px);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: scale(0.95) translateY(20px);
+            transition: transform 0.4s var(--ease);
         }
 
         #modal.show .modal-content {
@@ -467,41 +576,39 @@
         @media (max-width: 900px) {
             .modal-content {
                 grid-template-columns: 1fr;
-                height: auto;
                 max-height: 95vh;
+                overflow-y: auto;
             }
         }
 
-        .modal-image-container {
+        .modal-image-section {
             position: relative;
-            overflow: hidden;
             background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            min-height: 400px;
         }
 
         .modal-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center;
         }
 
         @media (max-width: 900px) {
-            .modal-image-container {
-                height: 280px;
+            .modal-image-section {
+                min-height: 300px;
             }
         }
 
-        /* 画像オーバーレイのバッジ */
         .modal-badge {
             position: absolute;
-            bottom: 1rem;
-            left: 1rem;
+            top: 1.5rem;
+            left: 1.5rem;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
             color: var(--magenta);
             display: flex;
             align-items: center;
@@ -509,87 +616,77 @@
         }
 
         .modal-badge .material-icons {
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .modal-body {
-            padding: 2rem 2.5rem;
+            padding: 2.5rem;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         .modal-header {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .modal-category {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.75rem;
         }
 
         .modal-title {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--cyan), var(--magenta));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--text);
             margin-bottom: 0.5rem;
             line-height: 1.3;
         }
 
         .modal-subtitle {
             font-size: 0.9rem;
-            color: #888;
-            font-style: italic;
+            color: var(--text-light);
         }
 
-        .modal-prompt-container {
+        .modal-prompt-section {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .modal-prompt-label {
             font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--cyan);
+            font-weight: 600;
+            color: var(--text-light);
             text-transform: uppercase;
             letter-spacing: 0.1em;
             margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .modal-prompt-label .material-icons {
-            font-size: 1rem;
         }
 
         .modal-prompt {
-            flex: 1;
-            font-size: 0.8rem;
-            color: #444;
-            line-height: 1.8;
-            background: linear-gradient(135deg, #f8f9fa, #f1f3f4);
+            background: var(--bg);
             padding: 1.25rem;
-            border-radius: 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--text);
+            line-height: 1.8;
+            max-height: 200px;
             overflow-y: auto;
             font-family: 'SF Mono', 'Consolas', monospace;
             white-space: pre-wrap;
             word-break: break-word;
-            border: 1px solid rgba(0, 212, 232, 0.1);
         }
 
         .modal-prompt::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .modal-prompt::-webkit-scrollbar-track {
-            background: transparent;
+            width: 4px;
         }
 
         .modal-prompt::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--cyan), var(--magenta));
-            border-radius: 3px;
+            background: var(--cyan);
+            border-radius: 2px;
         }
 
         .modal-actions {
@@ -605,93 +702,82 @@
         }
 
         .modal-btn {
-            padding: 1rem 1.2rem;
+            padding: 1rem;
             border: none;
-            border-radius: 14px;
+            border-radius: 12px;
             font-size: 0.85rem;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.3s var(--ease);
             font-family: inherit;
-            position: relative;
-            overflow: hidden;
         }
 
         .modal-btn .material-icons {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
 
         .modal-btn-copy {
-            background: linear-gradient(135deg, var(--cyan), #00a8b8);
+            background: var(--cyan);
             color: white;
-            box-shadow: 0 4px 15px rgba(0, 212, 232, 0.3);
         }
 
         .modal-btn-copy:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 212, 232, 0.4);
-        }
-
-        .modal-btn-copy:active {
-            transform: translateY(-1px);
+            background: #00b8cc;
+            transform: translateY(-2px);
         }
 
         .modal-btn-copy.copied {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: #10b981;
         }
 
         .modal-btn-fav {
-            background: linear-gradient(135deg, var(--pink), var(--magenta));
+            background: var(--pink);
             color: white;
-            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
         }
 
         .modal-btn-fav:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+            transform: translateY(-2px);
         }
 
         .modal-btn-fav.favorited {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: #ef4444;
         }
 
         .modal-btn-share {
-            background: linear-gradient(135deg, #1DA1F2, #0d8bd9);
+            background: #1DA1F2;
             color: white;
-            box-shadow: 0 4px 15px rgba(29, 161, 242, 0.3);
         }
 
         .modal-btn-share:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(29, 161, 242, 0.4);
+            background: #0d8bd9;
+            transform: translateY(-2px);
         }
 
         .close-btn {
             position: absolute;
-            top: 1.25rem;
-            right: 1.25rem;
-            width: 44px;
-            height: 44px;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: white;
+            background: var(--card-bg);
             border: none;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
+            transition: all 0.3s var(--ease);
             z-index: 10;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .close-btn .material-icons {
             font-size: 1.5rem;
-            color: #666;
-            transition: color 0.3s ease;
+            color: var(--text);
         }
 
         .close-btn:hover {
@@ -703,25 +789,25 @@
             color: white;
         }
 
-        /* トースト通知 */
+        /* ========== トースト ========== */
         .toast {
             position: fixed;
             bottom: 2rem;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            background: var(--text);
             color: white;
             padding: 1rem 2rem;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.9rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             z-index: 2000;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.4s var(--ease);
         }
 
         .toast.show {
@@ -731,70 +817,105 @@
 
         .toast .material-icons {
             font-size: 1.2rem;
+            color: var(--cyan);
         }
 
-        /* フッター */
+        /* ========== フッター ========== */
         footer {
-            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            background: var(--text);
             color: white;
-            padding: 3rem 2rem;
+            padding: 4rem 2rem;
             text-align: center;
         }
 
-        footer a {
-            color: white;
-            text-decoration: none;
-            margin: 0 1rem;
-            opacity: 0.9;
-            transition: opacity 0.3s;
+        .footer-logo {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        footer a:hover {
-            opacity: 1;
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--cyan);
         }
 
         .footer-copy {
-            margin-top: 1.5rem;
-            font-size: 0.8rem;
-            opacity: 0.8;
+            font-size: 0.75rem;
+            opacity: 0.5;
         }
     </style>
 </head>
 
 <body>
+    <!-- ナビゲーション -->
+    <nav class="nav" id="nav">
+        <div class="nav-logo">KONMARI</div>
+        <div class="nav-links">
+            <a href="#prompts">Prompts</a>
+            <a href="https://note.com/konmari/n/n6f2c0fbffc6c" target="_blank">Note</a>
+            <a href="https://x.com/konmari_tweet" target="_blank">X</a>
+        </div>
+    </nav>
+
     <!-- ヒーローセクション -->
     <section class="hero">
-        <div class="geo-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
-            <div class="shape shape-4"></div>
-            <div class="shape shape-5"></div>
-            <div class="shape shape-6"></div>
-            <div class="dots dots-1"></div>
-            <div class="dots dots-2"></div>
+        <div class="hero-bg">
+            <div class="hero-gradient hero-gradient-1"></div>
+            <div class="hero-gradient hero-gradient-2"></div>
+            <div class="hero-gradient hero-gradient-3"></div>
         </div>
 
         <div class="hero-content">
-            <img src="images/IMG_6672.JPG" alt="KONMARI" class="hero-icon">
+            <img src="images/IMG_6672.JPG" alt="KONMARI" class="hero-profile">
+            <div class="hero-label">AI Image Prompt Collection</div>
             <h1 class="hero-title">KONMARI prompt</h1>
-            <p class="hero-subtitle">AIエディター×デザイナー コンマリによる画像変換プロンプト集。あなたの画像を素敵なアートに変換します。</p>
-            <div class="scroll-btn" onclick="document.querySelector('.main-content').scrollIntoView({behavior: 'smooth'})">
-                <span>SCROLL</span>
-                <span class="material-icons">expand_more</span>
-            </div>
+            <p class="hero-desc">AIエディター×デザイナー コンマリによる画像変換プロンプト集。あなたの画像を素敵なアートに変換します。</p>
+            <a href="#prompts" class="hero-cta">
+                プロンプトを見る
+                <span class="material-icons">arrow_forward</span>
+            </a>
+        </div>
+
+        <div class="scroll-indicator" onclick="document.getElementById('prompts').scrollIntoView({behavior: 'smooth'})">
+            <span>SCROLL</span>
+            <div class="line"></div>
         </div>
     </section>
 
-    <!-- メインコンテンツ -->
-    <main class="main-content">
-        <div class="category-tabs" id="category-tabs"></div>
-        <div class="prompts-grid" id="prompts-grid"></div>
-    </main>
+    <!-- プロンプトセクション -->
+    <section class="main-section" id="prompts">
+        <div class="section-header">
+            <div class="section-label">Prompts</div>
+            <h2 class="section-title">画像変換プロンプト</h2>
+            <p class="section-desc">カテゴリーを選んで、お好みのプロンプトを見つけてください</p>
+        </div>
+
+        <div class="category-nav" id="category-nav"></div>
+        <div class="cards-grid" id="cards-grid"></div>
+    </section>
 
     <!-- フッター -->
     <footer>
-        <div>
+        <div class="footer-logo">KONMARI prompt</div>
+        <div class="footer-links">
             <a href="https://note.com/konmari/n/n6f2c0fbffc6c" target="_blank">note記事</a>
             <a href="https://x.com/konmari_tweet" target="_blank">@konmari_tweet</a>
         </div>
@@ -807,7 +928,7 @@
             <button class="close-btn" onclick="closeModal()">
                 <span class="material-icons">close</span>
             </button>
-            <div class="modal-image-container">
+            <div class="modal-image-section">
                 <img id="modal-image" src="" alt="" class="modal-image">
                 <div class="modal-badge">
                     <span class="material-icons">auto_awesome</span>
@@ -816,14 +937,12 @@
             </div>
             <div class="modal-body">
                 <div class="modal-header">
+                    <div class="modal-category" id="modal-category">Prompt</div>
                     <h2 id="modal-title" class="modal-title"></h2>
                     <p id="modal-subtitle" class="modal-subtitle"></p>
                 </div>
-                <div class="modal-prompt-container">
-                    <div class="modal-prompt-label">
-                        <span class="material-icons">code</span>
-                        PROMPT
-                    </div>
+                <div class="modal-prompt-section">
+                    <div class="modal-prompt-label">Prompt</div>
                     <div id="modal-prompt" class="modal-prompt"></div>
                 </div>
                 <div class="modal-actions">
@@ -844,37 +963,27 @@
         </div>
     </div>
 
-    <!-- トースト通知 -->
+    <!-- トースト -->
     <div id="toast" class="toast">
         <span class="material-icons">check_circle</span>
         <span id="toast-message"></span>
     </div>
 
     <script>
-        const iconMap = {
-            'acrylic-led-stand': 'lightbulb',
-            'crystal-ball-led': 'bubble_chart',
-            'cake': 'cake',
-            'jewelry': 'diamond',
-            'snow-globe': 'ac_unit',
-            'cookie-house': 'home',
-            'knitwear': 'checkroom',
-            'neon-light': 'wb_iridescent',
-            'wreath': 'filter_vintage',
-            'wall-art': 'wallpaper',
-            'character-tree': 'park',
-            'feast': 'restaurant',
-            'pochi-bukuro': 'redeem',
-            'sugoroku': 'casino',
-            'kagami-mochi': 'celebration',
-            'osechi': 'lunch_dining',
-            'lucky-bag': 'shopping_bag',
-            'snowman': 'person'
-        };
-
         let promptData = null;
         let currentPrompt = null;
+        let currentCategory = null;
         let favorites = JSON.parse(localStorage.getItem('konmari-favorites') || '[]');
+
+        // ナビゲーションスクロール効果
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', loadPrompts);
 
@@ -883,78 +992,104 @@
                 const response = await fetch('prompts.json');
                 promptData = await response.json();
 
-                // カテゴリータブ生成
-                const tabs = document.getElementById('category-tabs');
+                const nav = document.getElementById('category-nav');
 
-                // お気に入りタブを最初に追加
-                const favTab = document.createElement('button');
-                favTab.className = 'category-tab favorites';
-                favTab.innerHTML = '<span class="material-icons" style="font-size:1rem;vertical-align:middle;margin-right:0.3rem;">favorite</span>お気に入り';
-                favTab.onclick = () => {
-                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-                    favTab.classList.add('active');
+                // お気に入りタブ
+                const favBtn = document.createElement('button');
+                favBtn.className = 'category-btn favorites';
+                favBtn.innerHTML = '<span class="material-icons" style="font-size:1rem;vertical-align:middle;margin-right:0.3rem;">favorite</span>お気に入り';
+                favBtn.onclick = () => {
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    favBtn.classList.add('active');
+                    currentCategory = null;
                     renderFavorites();
                 };
-                tabs.appendChild(favTab);
+                nav.appendChild(favBtn);
 
+                // カテゴリータブ
                 promptData.categories.forEach((cat, i) => {
-                    const tab = document.createElement('button');
-                    tab.className = 'category-tab' + (cat.externalLink ? ' external' : '') + (i === 0 ? ' active' : '');
-                    tab.textContent = cat.name;
-                    tab.onclick = () => {
+                    const btn = document.createElement('button');
+                    btn.className = 'category-btn' + (cat.externalLink ? ' external' : '') + (i === 0 ? ' active' : '');
+                    btn.textContent = cat.name;
+                    btn.onclick = () => {
                         if (cat.externalLink) {
                             window.open(cat.externalLink, '_blank');
                         } else {
-                            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-                            tab.classList.add('active');
-                            renderPrompts(cat.prompts);
+                            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            currentCategory = cat.name;
+                            renderCards(cat.prompts);
                         }
                     };
-                    tabs.appendChild(tab);
+                    nav.appendChild(btn);
                 });
 
                 // 初期表示
                 const first = promptData.categories.find(c => !c.externalLink && c.prompts?.length > 0);
-                if (first) renderPrompts(first.prompts);
+                if (first) {
+                    currentCategory = first.name;
+                    renderCards(first.prompts);
+                }
 
             } catch (e) {
                 console.error('Failed to load prompts:', e);
             }
         }
 
-        function renderPrompts(prompts) {
-            const grid = document.getElementById('prompts-grid');
+        function renderCards(prompts) {
+            const grid = document.getElementById('cards-grid');
             grid.innerHTML = '';
 
             prompts.forEach(p => {
                 const card = document.createElement('div');
-                card.className = 'prompt-card';
-                const shortPrompt = p.prompt.substring(0, 150) + '...';
+                card.className = 'card';
+                card.onclick = (e) => {
+                    if (!e.target.closest('.quick-btn')) {
+                        openModal(p.id);
+                    }
+                };
                 card.innerHTML = `
-                    <img src="${p.image}" alt="${p.title}" class="card-image">
-                    <div class="card-content">
-                        <div>
-                            <div class="card-header">
-                                <span class="material-icons card-icon">${iconMap[p.id] || 'star'}</span>
-                                <h3 class="card-title">${p.title}</h3>
+                    <div class="card-image-wrap">
+                        <img src="${p.image}" alt="${p.title}" class="card-image">
+                        <div class="card-overlay">
+                            <div class="card-quick-actions">
+                                <button class="quick-btn" onclick="event.stopPropagation(); copyPrompt('${p.id}')" title="コピー">
+                                    <span class="material-icons">content_copy</span>
+                                </button>
+                                <button class="quick-btn" onclick="event.stopPropagation(); openModal('${p.id}')" title="詳細">
+                                    <span class="material-icons">open_in_full</span>
+                                </button>
                             </div>
-                            <p class="card-subtitle">${p.subtitle}</p>
-                            <div class="card-prompt">${shortPrompt}</div>
                         </div>
-                        <div class="card-actions">
-                            <button class="btn" onclick="openModal('${p.id}')">
-                                <span class="material-icons">visibility</span>
-                                詳細
-                            </button>
-                            <button class="btn" onclick="copyPrompt(this, '${p.id}')">
-                                <span class="material-icons">content_copy</span>
-                                コピー
-                            </button>
-                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-category">${currentCategory || 'Prompt'}</div>
+                        <h3 class="card-title">${p.title}</h3>
+                        <p class="card-subtitle">${p.subtitle}</p>
                     </div>
                 `;
                 grid.appendChild(card);
             });
+        }
+
+        function renderFavorites() {
+            const grid = document.getElementById('cards-grid');
+            grid.innerHTML = '';
+
+            if (favorites.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <span class="material-icons">favorite_border</span>
+                        <h3>お気に入りがありません</h3>
+                        <p>プロンプトの詳細画面から追加できます</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const favPrompts = favorites.map(id => findPrompt(id)).filter(p => p);
+            currentCategory = 'Favorites';
+            renderCards(favPrompts);
         }
 
         function findPrompt(id) {
@@ -972,18 +1107,17 @@
             if (!currentPrompt) return;
 
             document.getElementById('modal-image').src = currentPrompt.image;
+            document.getElementById('modal-category').textContent = currentCategory || 'Prompt';
             document.getElementById('modal-title').textContent = currentPrompt.title;
             document.getElementById('modal-subtitle').textContent = currentPrompt.subtitle;
             document.getElementById('modal-prompt').textContent = currentPrompt.prompt;
 
-            // お気に入り状態を更新
             updateFavoriteButton();
 
             const modal = document.getElementById('modal');
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
 
-            // アニメーション用にクラスを追加
             requestAnimationFrame(() => {
                 modal.classList.add('show');
             });
@@ -999,19 +1133,13 @@
             }, 300);
         }
 
-        async function copyPrompt(btn, id) {
+        async function copyPrompt(id) {
             const p = findPrompt(id);
             if (!p) return;
 
             try {
                 await navigator.clipboard.writeText(p.prompt);
-                const orig = btn.innerHTML;
-                btn.classList.add('copied');
-                btn.innerHTML = '<span class="material-icons">check</span>OK!';
-                setTimeout(() => {
-                    btn.classList.remove('copied');
-                    btn.innerHTML = orig;
-                }, 2000);
+                showToast('プロンプトをコピーしました！');
             } catch (e) {
                 console.error('Copy failed:', e);
             }
@@ -1035,7 +1163,6 @@
             }
         }
 
-        // お気に入り機能
         function toggleFavorite() {
             if (!currentPrompt) return;
 
@@ -1066,46 +1193,21 @@
             }
         }
 
-        // お気に入り一覧表示
-        function renderFavorites() {
-            const grid = document.getElementById('prompts-grid');
-            grid.innerHTML = '';
-
-            if (favorites.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-favorites" style="grid-column: 1 / -1;">
-                        <span class="material-icons">favorite_border</span>
-                        <p>お気に入りがありません</p>
-                        <small>プロンプトの詳細画面から追加できます</small>
-                    </div>
-                `;
-                return;
-            }
-
-            const favPrompts = favorites.map(id => findPrompt(id)).filter(p => p);
-            renderPrompts(favPrompts);
-        }
-
-        // Xシェア機能（画像付き）
         async function shareToX() {
             if (!currentPrompt) return;
 
-            // 画像をBlobとしてダウンロードしてクリップボードにコピー
             try {
                 showToast('画像を準備中...');
 
-                // 画像をfetchしてBlobに変換
                 const response = await fetch(currentPrompt.image);
                 const blob = await response.blob();
 
-                // クリップボードに画像をコピー（対応ブラウザのみ）
                 if (navigator.clipboard && navigator.clipboard.write) {
                     const clipboardItem = new ClipboardItem({ [blob.type]: blob });
                     await navigator.clipboard.write([clipboardItem]);
                     showToast('画像をコピーしました！Xに貼り付けてください');
                 }
 
-                // X投稿画面を開く
                 const text = `【${currentPrompt.title}】\n${currentPrompt.subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう✨\n\n#KONMARIprompt #AI画像生成`;
                 const url = 'https://konmari-prog.github.io/konmariprompt/';
                 const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
@@ -1116,7 +1218,6 @@
 
             } catch (e) {
                 console.error('Share failed:', e);
-                // フォールバック: 画像なしでシェア
                 const text = `【${currentPrompt.title}】\n${currentPrompt.subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう✨\n\n#KONMARIprompt #AI画像生成`;
                 const url = 'https://konmari-prog.github.io/konmariprompt/';
                 const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
@@ -1125,7 +1226,6 @@
             }
         }
 
-        // トースト通知
         function showToast(message) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-message').textContent = message;
@@ -1136,12 +1236,10 @@
             }, 3000);
         }
 
-        // モーダル外クリックで閉じる
         document.getElementById('modal').addEventListener('click', e => {
             if (e.target.id === 'modal') closeModal();
         });
 
-        // ESCキーで閉じる
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape') closeModal();
         });
