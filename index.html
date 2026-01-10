@@ -916,6 +916,55 @@
             font-size: 0.75rem;
             opacity: 0.5;
         }
+
+        /* ========== 言語切り替え ========== */
+        .lang-switcher {
+            display: flex;
+            gap: 0.25rem;
+            margin-left: 1rem;
+            padding-left: 1rem;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .lang-btn {
+            padding: 0.4rem 0.6rem;
+            border: none;
+            background: transparent;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s var(--ease);
+            color: var(--text-light);
+            font-family: inherit;
+        }
+
+        .lang-btn:hover {
+            background: rgba(0, 212, 232, 0.1);
+            color: var(--cyan);
+        }
+
+        .lang-btn.active {
+            background: var(--cyan);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .lang-switcher {
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                z-index: 101;
+                margin: 0;
+                padding: 0;
+                border: none;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 8px;
+                padding: 0.25rem;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+        }
     </style>
 </head>
 
@@ -924,20 +973,25 @@
     <nav class="nav" id="nav">
         <div class="nav-logo">KONMARI</div>
         <div class="nav-links">
-            <a href="#prompts">Prompts</a>
+            <a href="#prompts" data-i18n="nav.prompts">Prompts</a>
             <a href="https://note.com/konmari/n/n6f2c0fbffc6c" target="_blank">Note</a>
             <a href="https://x.com/konmari_tweet" target="_blank">X</a>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="ja">日本語</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="zh">中文</button>
+            </div>
         </div>
     </nav>
 
     <!-- ヒーローセクション -->
     <section class="hero">
         <div class="hero-left">
-            <div class="hero-label">AI Image Prompt Collection</div>
-            <h1 class="hero-title">Transform your<br>images with<br><span>AI prompts</span></h1>
-            <p class="hero-desc">AIエディター×デザイナー コンマリによる画像変換プロンプト集。あなたの画像を素敵なアートに変換します。</p>
+            <div class="hero-label" data-i18n="hero.label">AI Image Prompt Collection</div>
+            <h1 class="hero-title" data-i18n="hero.title">Transform your<br>images with<br><span>AI prompts</span></h1>
+            <p class="hero-desc" data-i18n="hero.desc">AIエディター×デザイナー コンマリによる画像変換プロンプト集。あなたの画像を素敵なアートに変換します。</p>
             <a href="#prompts" class="hero-cta">
-                View Prompts
+                <span data-i18n="hero.cta">View Prompts</span>
                 <span class="material-icons">arrow_forward</span>
             </a>
         </div>
@@ -970,9 +1024,9 @@
     <!-- プロンプトセクション -->
     <section class="main-section" id="prompts">
         <div class="section-header">
-            <div class="section-label">Prompts</div>
-            <h2 class="section-title">画像変換プロンプト</h2>
-            <p class="section-desc">カテゴリーを選んで、お好みのプロンプトを見つけてください</p>
+            <div class="section-label" data-i18n="section.label">Prompts</div>
+            <h2 class="section-title" data-i18n="section.title">画像変換プロンプト</h2>
+            <p class="section-desc" data-i18n="section.desc">カテゴリーを選んで、お好みのプロンプトを見つけてください</p>
         </div>
 
         <div class="category-nav" id="category-nav"></div>
@@ -1039,8 +1093,125 @@
     <script>
         let promptData = null;
         let currentPrompt = null;
-        let currentCategory = null;
+        let currentFilter = 'all'; // all, christmas, newyear, favorites
         let favorites = JSON.parse(localStorage.getItem('konmari-favorites') || '[]');
+        let currentLang = localStorage.getItem('konmari-lang') || 'ja';
+
+        // 多言語テキスト
+        const i18n = {
+            ja: {
+                'nav.prompts': 'プロンプト',
+                'hero.label': 'AIイメージプロンプト集',
+                'hero.title': 'あなたの画像を<br><span>AI</span>で変換',
+                'hero.desc': 'AIエディター×デザイナー コンマリによる画像変換プロンプト集。あなたの画像を素敵なアートに変換します。',
+                'hero.cta': 'プロンプトを見る',
+                'section.label': 'プロンプト',
+                'section.title': '画像変換プロンプト',
+                'section.desc': 'カテゴリーを選んで、お好みのプロンプトを見つけてください',
+                'cat.all': 'すべて',
+                'cat.christmas': 'クリスマス',
+                'cat.newyear': 'お正月',
+                'cat.favorites': 'お気に入り',
+                'modal.copy': 'コピー',
+                'modal.copied': 'コピー完了',
+                'modal.favorite': 'お気に入り',
+                'modal.favorited': 'お気に入り済',
+                'modal.share': 'シェア',
+                'empty.title': 'お気に入りがありません',
+                'empty.desc': 'プロンプトの詳細画面から追加できます',
+                'toast.copied': 'プロンプトをコピーしました！',
+                'toast.fav.add': 'お気に入りに追加しました！',
+                'toast.fav.remove': 'お気に入りから削除しました',
+                'toast.preparing': '画像を準備中...',
+                'toast.image.copied': '画像をコピーしました！Xに貼り付けてください'
+            },
+            en: {
+                'nav.prompts': 'Prompts',
+                'hero.label': 'AI Image Prompt Collection',
+                'hero.title': 'Transform your<br>images with<br><span>AI prompts</span>',
+                'hero.desc': 'AI Image Transformation Prompts by KONMARI. Transform your images into beautiful art.',
+                'hero.cta': 'View Prompts',
+                'section.label': 'Prompts',
+                'section.title': 'Image Transformation Prompts',
+                'section.desc': 'Select a category and find your favorite prompts',
+                'cat.all': 'All',
+                'cat.christmas': 'Christmas',
+                'cat.newyear': 'New Year',
+                'cat.favorites': 'Favorites',
+                'modal.copy': 'Copy',
+                'modal.copied': 'Copied!',
+                'modal.favorite': 'Favorite',
+                'modal.favorited': 'Favorited',
+                'modal.share': 'Share',
+                'empty.title': 'No favorites yet',
+                'empty.desc': 'Add prompts from the detail view',
+                'toast.copied': 'Prompt copied!',
+                'toast.fav.add': 'Added to favorites!',
+                'toast.fav.remove': 'Removed from favorites',
+                'toast.preparing': 'Preparing image...',
+                'toast.image.copied': 'Image copied! Paste it on X'
+            },
+            zh: {
+                'nav.prompts': '提示词',
+                'hero.label': 'AI图像提示词集',
+                'hero.title': '用<span>AI</span>转换<br>您的图像',
+                'hero.desc': 'AI编辑器×设计师 KONMARI的图像转换提示词集。将您的图像转换为精美艺术品。',
+                'hero.cta': '查看提示词',
+                'section.label': '提示词',
+                'section.title': '图像转换提示词',
+                'section.desc': '选择类别，找到您喜欢的提示词',
+                'cat.all': '全部',
+                'cat.christmas': '圣诞节',
+                'cat.newyear': '新年',
+                'cat.favorites': '收藏',
+                'modal.copy': '复制',
+                'modal.copied': '已复制',
+                'modal.favorite': '收藏',
+                'modal.favorited': '已收藏',
+                'modal.share': '分享',
+                'empty.title': '暂无收藏',
+                'empty.desc': '在详情页面添加收藏',
+                'toast.copied': '提示词已复制！',
+                'toast.fav.add': '已添加到收藏！',
+                'toast.fav.remove': '已从收藏中移除',
+                'toast.preparing': '正在准备图片...',
+                'toast.image.copied': '图片已复制！请粘贴到X'
+            }
+        };
+
+        function t(key) {
+            return i18n[currentLang][key] || i18n['ja'][key] || key;
+        }
+
+        function updateI18n() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.innerHTML = t(key);
+            });
+            // カテゴリーボタンを再描画
+            if (promptData) {
+                renderCategoryNav();
+            }
+        }
+
+        // 言語切り替え
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.dataset.lang === currentLang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+                btn.addEventListener('click', () => {
+                    currentLang = btn.dataset.lang;
+                    localStorage.setItem('konmari-lang', currentLang);
+                    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    updateI18n();
+                    renderCurrentView();
+                });
+            });
+        });
 
         // ナビゲーションスクロール効果
         window.addEventListener('scroll', () => {
@@ -1058,49 +1229,75 @@
             try {
                 const response = await fetch('prompts.json');
                 promptData = await response.json();
-
-                const nav = document.getElementById('category-nav');
-
-                // お気に入りタブ
-                const favBtn = document.createElement('button');
-                favBtn.className = 'category-btn favorites';
-                favBtn.innerHTML = '<span class="material-icons" style="font-size:1rem;vertical-align:middle;margin-right:0.3rem;">favorite</span>お気に入り';
-                favBtn.onclick = () => {
-                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                    favBtn.classList.add('active');
-                    currentCategory = null;
-                    renderFavorites();
-                };
-                nav.appendChild(favBtn);
-
-                // カテゴリータブ
-                promptData.categories.forEach((cat, i) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'category-btn' + (cat.externalLink ? ' external' : '') + (i === 0 ? ' active' : '');
-                    btn.textContent = cat.name;
-                    btn.onclick = () => {
-                        if (cat.externalLink) {
-                            window.open(cat.externalLink, '_blank');
-                        } else {
-                            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                            btn.classList.add('active');
-                            currentCategory = cat.name;
-                            renderCards(cat.prompts);
-                        }
-                    };
-                    nav.appendChild(btn);
-                });
-
-                // 初期表示
-                const first = promptData.categories.find(c => !c.externalLink && c.prompts?.length > 0);
-                if (first) {
-                    currentCategory = first.name;
-                    renderCards(first.prompts);
-                }
-
+                updateI18n();
+                renderCategoryNav();
+                renderCurrentView();
             } catch (e) {
                 console.error('Failed to load prompts:', e);
             }
+        }
+
+        function renderCategoryNav() {
+            const nav = document.getElementById('category-nav');
+            nav.innerHTML = '';
+
+            // すべてタブ
+            const allBtn = document.createElement('button');
+            allBtn.className = 'category-btn' + (currentFilter === 'all' ? ' active' : '');
+            allBtn.textContent = t('cat.all');
+            allBtn.onclick = () => setFilter('all');
+            nav.appendChild(allBtn);
+
+            // クリスマスタブ
+            const xmasBtn = document.createElement('button');
+            xmasBtn.className = 'category-btn' + (currentFilter === 'christmas' ? ' active' : '');
+            xmasBtn.textContent = t('cat.christmas');
+            xmasBtn.onclick = () => setFilter('christmas');
+            nav.appendChild(xmasBtn);
+
+            // お正月タブ
+            const nyBtn = document.createElement('button');
+            nyBtn.className = 'category-btn' + (currentFilter === 'newyear' ? ' active' : '');
+            nyBtn.textContent = t('cat.newyear');
+            nyBtn.onclick = () => setFilter('newyear');
+            nav.appendChild(nyBtn);
+
+            // お気に入りタブ
+            const favBtn = document.createElement('button');
+            favBtn.className = 'category-btn favorites' + (currentFilter === 'favorites' ? ' active' : '');
+            favBtn.innerHTML = '<span class="material-icons" style="font-size:1rem;vertical-align:middle;margin-right:0.3rem;">favorite</span>' + t('cat.favorites');
+            favBtn.onclick = () => setFilter('favorites');
+            nav.appendChild(favBtn);
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            renderCategoryNav();
+            renderCurrentView();
+        }
+
+        function renderCurrentView() {
+            if (currentFilter === 'favorites') {
+                renderFavorites();
+            } else {
+                let prompts = promptData.prompts;
+                if (currentFilter !== 'all') {
+                    prompts = prompts.filter(p => p.tag === currentFilter);
+                }
+                renderCards(prompts);
+            }
+        }
+
+        function getLocalizedText(obj) {
+            if (typeof obj === 'string') return obj;
+            return obj[currentLang] || obj['ja'] || '';
+        }
+
+        function getCategoryLabel(tag) {
+            if (tag === 'christmas') return t('cat.christmas');
+            if (tag === 'newyear') return t('cat.newyear');
+            return 'Prompt';
         }
 
         function renderCards(prompts) {
@@ -1115,12 +1312,14 @@
                         openModal(p.id);
                     }
                 };
+                const title = getLocalizedText(p.title);
+                const subtitle = getLocalizedText(p.subtitle);
                 card.innerHTML = `
                     <div class="card-image-wrap">
-                        <img src="${p.image}" alt="${p.title}" class="card-image">
+                        <img src="${p.image}" alt="${title}" class="card-image">
                         <div class="card-overlay">
                             <div class="card-quick-actions">
-                                <button class="quick-btn" onclick="event.stopPropagation(); copyPrompt('${p.id}')" title="コピー">
+                                <button class="quick-btn" onclick="event.stopPropagation(); copyPrompt('${p.id}')" title="${t('modal.copy')}">
                                     <span class="material-icons">content_copy</span>
                                 </button>
                                 <button class="quick-btn" onclick="event.stopPropagation(); openModal('${p.id}')" title="詳細">
@@ -1130,9 +1329,9 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="card-category">${currentCategory || 'Prompt'}</div>
-                        <h3 class="card-title">${p.title}</h3>
-                        <p class="card-subtitle">${p.subtitle}</p>
+                        <div class="card-category">${getCategoryLabel(p.tag)}</div>
+                        <h3 class="card-title">${title}</h3>
+                        <p class="card-subtitle">${subtitle}</p>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -1147,39 +1346,36 @@
                 grid.innerHTML = `
                     <div class="empty-state">
                         <span class="material-icons">favorite_border</span>
-                        <h3>お気に入りがありません</h3>
-                        <p>プロンプトの詳細画面から追加できます</p>
+                        <h3>${t('empty.title')}</h3>
+                        <p>${t('empty.desc')}</p>
                     </div>
                 `;
                 return;
             }
 
             const favPrompts = favorites.map(id => findPrompt(id)).filter(p => p);
-            currentCategory = 'Favorites';
             renderCards(favPrompts);
         }
 
         function findPrompt(id) {
-            for (const cat of promptData.categories) {
-                if (cat.prompts) {
-                    const p = cat.prompts.find(p => p.id === id);
-                    if (p) return p;
-                }
-            }
-            return null;
+            return promptData.prompts.find(p => p.id === id) || null;
         }
 
         function openModal(id) {
             currentPrompt = findPrompt(id);
             if (!currentPrompt) return;
 
+            const title = getLocalizedText(currentPrompt.title);
+            const subtitle = getLocalizedText(currentPrompt.subtitle);
+
             document.getElementById('modal-image').src = currentPrompt.image;
-            document.getElementById('modal-category').textContent = currentCategory || 'Prompt';
-            document.getElementById('modal-title').textContent = currentPrompt.title;
-            document.getElementById('modal-subtitle').textContent = currentPrompt.subtitle;
+            document.getElementById('modal-category').textContent = getCategoryLabel(currentPrompt.tag);
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-subtitle').textContent = subtitle;
             document.getElementById('modal-prompt').textContent = currentPrompt.prompt;
 
             updateFavoriteButton();
+            updateModalButtons();
 
             const modal = document.getElementById('modal');
             modal.style.display = 'flex';
@@ -1188,6 +1384,13 @@
             requestAnimationFrame(() => {
                 modal.classList.add('show');
             });
+        }
+
+        function updateModalButtons() {
+            const copyBtn = document.getElementById('modal-copy-btn');
+            const shareBtn = document.querySelector('.modal-btn-share');
+            copyBtn.innerHTML = `<span class="material-icons">content_copy</span>${t('modal.copy')}`;
+            shareBtn.innerHTML = `<span class="material-icons">share</span>${t('modal.share')}`;
         }
 
         function closeModal() {
@@ -1206,7 +1409,7 @@
 
             try {
                 await navigator.clipboard.writeText(p.prompt);
-                showToast('プロンプトをコピーしました！');
+                showToast(t('toast.copied'));
             } catch (e) {
                 console.error('Copy failed:', e);
             }
@@ -1218,12 +1421,11 @@
             try {
                 await navigator.clipboard.writeText(currentPrompt.prompt);
                 btn.classList.add('copied');
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<span class="material-icons">check</span>コピー完了';
-                showToast('プロンプトをコピーしました！');
+                btn.innerHTML = `<span class="material-icons">check</span>${t('modal.copied')}`;
+                showToast(t('toast.copied'));
                 setTimeout(() => {
                     btn.classList.remove('copied');
-                    btn.innerHTML = orig;
+                    btn.innerHTML = `<span class="material-icons">content_copy</span>${t('modal.copy')}`;
                 }, 2000);
             } catch (e) {
                 console.error('Copy failed:', e);
@@ -1236,10 +1438,10 @@
             const index = favorites.indexOf(currentPrompt.id);
             if (index > -1) {
                 favorites.splice(index, 1);
-                showToast('お気に入りから削除しました');
+                showToast(t('toast.fav.remove'));
             } else {
                 favorites.push(currentPrompt.id);
-                showToast('お気に入りに追加しました！');
+                showToast(t('toast.fav.add'));
             }
 
             localStorage.setItem('konmari-favorites', JSON.stringify(favorites));
@@ -1253,18 +1455,21 @@
 
             if (isFav) {
                 btn.classList.add('favorited');
-                btn.innerHTML = '<span class="material-icons">favorite</span>お気に入り済';
+                btn.innerHTML = `<span class="material-icons">favorite</span>${t('modal.favorited')}`;
             } else {
                 btn.classList.remove('favorited');
-                btn.innerHTML = '<span class="material-icons">favorite_border</span>お気に入り';
+                btn.innerHTML = `<span class="material-icons">favorite_border</span>${t('modal.favorite')}`;
             }
         }
 
         async function shareToX() {
             if (!currentPrompt) return;
 
+            const title = getLocalizedText(currentPrompt.title);
+            const subtitle = getLocalizedText(currentPrompt.subtitle);
+
             try {
-                showToast('画像を準備中...');
+                showToast(t('toast.preparing'));
 
                 const response = await fetch(currentPrompt.image);
                 const blob = await response.blob();
@@ -1272,10 +1477,10 @@
                 if (navigator.clipboard && navigator.clipboard.write) {
                     const clipboardItem = new ClipboardItem({ [blob.type]: blob });
                     await navigator.clipboard.write([clipboardItem]);
-                    showToast('画像をコピーしました！Xに貼り付けてください');
+                    showToast(t('toast.image.copied'));
                 }
 
-                const text = `【${currentPrompt.title}】\n${currentPrompt.subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう✨\n\n#KONMARIprompt #AI画像生成`;
+                const text = `【${title}】\n${subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう✨\n\n#KONMARIprompt #AI画像生成`;
                 const url = 'https://konmari-prog.github.io/konmariprompt/';
                 const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
 
@@ -1285,11 +1490,10 @@
 
             } catch (e) {
                 console.error('Share failed:', e);
-                const text = `【${currentPrompt.title}】\n${currentPrompt.subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう✨\n\n#KONMARIprompt #AI画像生成`;
+                const text = `【${title}】\n${subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう✨\n\n#KONMARIprompt #AI画像生成`;
                 const url = 'https://konmari-prog.github.io/konmariprompt/';
                 const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
                 window.open(xUrl, '_blank', 'width=550,height=520');
-                showToast('Xでシェアします');
             }
         }
 
