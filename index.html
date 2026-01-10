@@ -1229,6 +1229,9 @@
             try {
                 const response = await fetch('prompts.json');
                 promptData = await response.json();
+                console.log('Loaded promptData:', promptData);
+                console.log('Prompts array:', promptData.prompts);
+                console.log('Current filter:', currentFilter);
                 updateI18n();
                 renderCategoryNav();
                 renderCurrentView();
@@ -1278,13 +1281,16 @@
         }
 
         function renderCurrentView() {
+            console.log('renderCurrentView called, filter:', currentFilter);
             if (currentFilter === 'favorites') {
                 renderFavorites();
             } else {
                 let prompts = promptData.prompts;
+                console.log('All prompts:', prompts);
                 if (currentFilter !== 'all') {
                     prompts = prompts.filter(p => p.tag === currentFilter);
                 }
+                console.log('Filtered prompts:', prompts);
                 renderCards(prompts);
             }
         }
