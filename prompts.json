@@ -319,6 +319,22 @@
       },
       "image": "images/japanese_magazine_cover.png",
       "prompt": "**[AI Instruction: Japanese Magazine Cover Ultra Dense Design]**\n\nアップロードされた画像を基に、日本の雑誌特有の「情報量が多くて賑やか（ビジー）で、かつプロフェッショナルに洗練された」スタイルの表紙画像を生成します。\n\n**[Processing Steps]**\n\n**Step 1: 画像分析とターゲットアスペクト比（3:4）への適合**\n- 入力画像の被写体、ムード、色彩、構図を分析し、3:4の縦長アスペクト比に最適化します。\n- 日本の雑誌スタイル（ファッション、美容、ライフスタイル等）に適したテーマを特定します。\n- 元画像が3:4でない場合、主要な被写体を活かすようにクロップするか、画像のスタイルと一致する背景をシームレスに生成・拡張してフレームを埋めます。\n\n**Step 2: 英語の架空メインタイトルの生成とデザイン設定**\n- 画像のテーマに基づき、キャッチーな英語の架空雑誌名を考案します。\n- 視認性が高く洗練された強力な英語フォント（例：太字サンセリフ、エレガントなセリフ、ディスプレイ書体）を選定します。\n- 画像から抽出した複数の色、グラデーション、フチ取り、影などを組み合わせ、立体的で魅力的な配色を指定します。\n\n**Step 3: 日本語サブテキストとグラフィック要素の大量生成**\n- テキスト内容：サブタイトル、特集見出し、ミニコラム、リード文、キャッチコピー、架空のブランド・人物名など。\n- 必須要素：発行日、価格、出版社ロゴ、バーコード、URL、SNSアカウントなど。\n- スタイル：ゴシック、明朝、手書き風など多様なフォントを混在させ、サイズも極大から極小まで幅を持たせます。色も背景とのコントラストを保ちつつカラフルに設定します。\n- グラフィック：矢印、星、丸、点線、吹き出し、ライン、抽象シェイプなど。\n\n**Step 4: 画像と全要素のシームレスな統合と高密度レイアウトの実装**\n- メインタイトルを最大化し、被写体の背後に部分的に隠すなどして奥行きを出します。\n- サブテキストやグラフィックは、ブロックを重ねる、斜めに配置する、縦横を混在させるなどして、紙面を埋め尽くす「雑多感」を演出します。\n- テキストが被写体に回り込む、光の影響を受けるなど、単なるオーバーレイではない深い相互作用を持たせます。\n- 視覚的階層、バランス、整列、近接性を駆使し、情報過多でありながら視線がスムーズに流れる洗練された構成を実現します。\n\n**[Output]**\n- Format: image\n- Aspect Ratio: 3:4\n- 指定されたアスペクト比で、ベース画像と全てのテキスト・グラフィック要素がシームレスかつ立体的に統合された雑誌表紙画像。英語のメインタイトルと、画面を埋め尽くす日本語の多様な要素が、高い視認性と色彩豊かなデザインで配置され、情報満載でエネルギッシュな日本のプレミアム雑誌の雰囲気を完璧に再現していること。"
+    },
+    {
+      "id": "auto-handwritten-overlay",
+      "tag": "design",
+      "title": {
+        "ja": "手書きペイントオーバーレイ編",
+        "en": "Handwritten Paint Overlay",
+        "zh": "手绘涂鸦叠加篇"
+      },
+      "subtitle": {
+        "ja": "画像に手書き風ペイントを自動追加",
+        "en": "Auto Handwritten Paint Effect",
+        "zh": "自动添加手绘风格效果"
+      },
+      "image": "images/auto_handwritten_overlay.png",
+      "prompt": "**[AI Instruction: Automatic Handwritten Paint Overlay]**\n\nAutomatically applies a handwritten paint effect to an uploaded image. The AI analyzes the image's subject and mood to determine the style, color, and content of the handwritten elements without explicit user input beyond the image itself.\n\n**[Processing Steps]**\n\n**Step 1: Image Analysis**\n- Analyze the uploaded image to detect the main subject (e.g., person, pet, landscape, object).\n- Identify the overall mood and atmosphere (e.g., joyful, nostalgic, energetic, calm, romantic).\n- Extract the dominant color palette from the image.\n\n**Step 2: Style Selection**\n- Based on the detected mood, automatically select an appropriate paint style:\n  - Joyful/Energetic → Bold, playful strokes with vibrant colors\n  - Calm/Peaceful → Soft, delicate lines with muted tones\n  - Romantic/Nostalgic → Elegant, flowing script with warm colors\n  - Fun/Quirky → Doodle-like elements with contrasting colors\n\n**Step 3: Element Generation**\n- Generate handwritten elements that complement the image:\n  - Simple illustrations (hearts, stars, flowers, sparkles, abstract shapes)\n  - Short text or phrases that match the mood\n  - Decorative strokes and flourishes\n  - Speech bubbles or thought clouds (if appropriate)\n\n**Step 4: Overlay Integration**\n- Position the handwritten elements to enhance, not obscure, the main subject.\n- Ensure colors complement or harmoniously contrast with the image palette.\n- Create a natural, organic feel as if drawn directly on a physical photo.\n\n**[Output]**\nA photograph of [auto_detected_photo_subject] with a [auto_detected_photo_mood] mood. Overlay a handwritten paint effect in a [auto_selected_paint_style] style using a [auto_selected_paint_color] color. The painted elements include simple illustrations, shapes, and short text or phrases that organically complement the image's detected theme and atmosphere."
     }
   ]
 }
