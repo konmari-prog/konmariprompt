@@ -996,15 +996,15 @@
             </a>
         </div>
 
-        <div class="hero-right">
+        <div class="hero-right" id="hero-images">
             <div class="hero-image-item">
-                <img src="images/acrylic_led_stand.png" alt="Sample 1">
+                <img src="" alt="Sample 1">
             </div>
             <div class="hero-image-item">
-                <img src="images/wreath.png" alt="Sample 2">
+                <img src="" alt="Sample 2">
             </div>
             <div class="hero-image-item">
-                <img src="images/kagami_mochi.png" alt="Sample 3">
+                <img src="" alt="Sample 3">
             </div>
             <div class="hero-profile-badge">
                 <img src="images/IMG_6672.JPG" alt="KONMARI">
@@ -1232,9 +1232,21 @@
                 updateI18n();
                 renderCategoryNav();
                 renderCurrentView();
+                updateHeroImages();
             } catch (e) {
                 console.error('Failed to load prompts:', e);
             }
+        }
+
+        function updateHeroImages() {
+            const latest = [...promptData.prompts].reverse().slice(0, 3);
+            const heroImages = document.querySelectorAll('#hero-images .hero-image-item img');
+            latest.forEach((p, i) => {
+                if (heroImages[i]) {
+                    heroImages[i].src = p.image;
+                    heroImages[i].alt = typeof p.title === 'string' ? p.title : p.title.ja;
+                }
+            });
         }
 
         function renderCategoryNav() {
@@ -1281,7 +1293,7 @@
             if (currentFilter === 'favorites') {
                 renderFavorites();
             } else {
-                let prompts = promptData.prompts;
+                let prompts = [...promptData.prompts].reverse();
                 if (currentFilter !== 'all') {
                     prompts = prompts.filter(p => p.tag === currentFilter);
                 }
