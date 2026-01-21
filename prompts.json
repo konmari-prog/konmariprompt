@@ -335,6 +335,54 @@
       },
       "image": "images/auto_handwritten_overlay.png",
       "prompt": "**[AI Instruction: Automatic Handwritten Paint Overlay]**\n\nAutomatically applies a handwritten paint effect to an uploaded image. The AI analyzes the image's subject and mood to determine the style, color, and content of the handwritten elements without explicit user input beyond the image itself.\n\n**[Processing Steps]**\n\n**Step 1: Image Analysis**\n- Analyze the uploaded image to detect the main subject (e.g., person, pet, landscape, object).\n- Identify the overall mood and atmosphere (e.g., joyful, nostalgic, energetic, calm, romantic).\n- Extract the dominant color palette from the image.\n\n**Step 2: Style Selection**\n- Based on the detected mood, automatically select an appropriate paint style:\n  - Joyful/Energetic → Bold, playful strokes with vibrant colors\n  - Calm/Peaceful → Soft, delicate lines with muted tones\n  - Romantic/Nostalgic → Elegant, flowing script with warm colors\n  - Fun/Quirky → Doodle-like elements with contrasting colors\n\n**Step 3: Element Generation**\n- Generate handwritten elements that complement the image:\n  - Simple illustrations (hearts, stars, flowers, sparkles, abstract shapes)\n  - Short text or phrases that match the mood\n  - Decorative strokes and flourishes\n  - Speech bubbles or thought clouds (if appropriate)\n\n**Step 4: Overlay Integration**\n- Position the handwritten elements to enhance, not obscure, the main subject.\n- Ensure colors complement or harmoniously contrast with the image palette.\n- Create a natural, organic feel as if drawn directly on a physical photo.\n\n**[Output]**\nA photograph of [auto_detected_photo_subject] with a [auto_detected_photo_mood] mood. Overlay a handwritten paint effect in a [auto_selected_paint_style] style using a [auto_selected_paint_color] color. The painted elements include simple illustrations, shapes, and short text or phrases that organically complement the image's detected theme and atmosphere."
+    },
+    {
+      "id": "bottle-drink",
+      "tag": "product",
+      "title": {
+        "ja": "ペットボトルドリンク編",
+        "en": "Bottle Drink",
+        "zh": "瓶装饮料篇"
+      },
+      "subtitle": {
+        "ja": "画像をペットボトル飲料に変換",
+        "en": "Image-to-Bottle Drink",
+        "zh": "图像转瓶装饮料"
+      },
+      "image": "images/bottle_drink.png",
+      "prompt": "**[AI指示: 画像→ペットボトル飲料変換]**\n\n**[入力画像]** を分析する。\n\n1. **抽出:** [メインモチーフ]、[雰囲気]、[カラーパレット]を読み取る。\n2. **ドリンク選択:** 画像の色と雰囲気からドリンクを自由に決める（フルーツウォーター、炭酸、お茶、乳酸菌飲料、エナジードリンク、スムージーなど）\n3. **ラベルデザイン:** モチーフをラベルのイラストやロゴに。色はドリンクの液体色とラベルに反映。\n4. **テキスト:** 画像内に文字があれば商品名やフレーバー名として活用。\n\n**[メインモチーフ]**\nコンビニの飲料コーナーで目を引く新商品のペットボトル。[入力画像]の世界観がそのまま飲み物になったようなデザイン。[検出されたモチーフ]がラベルを飾り、液体の色もテーマカラー。ボトルの形状も自由（スリム、丸型、缶タイプなど）。\n\n**[雰囲気]**\n商品広告のようなクリアな撮影。ボトルに水滴がついて冷えている感じ。背景にフルーツや素材が散らばっていてもいい。新発売のCMに使えそうな爽やかさ。"
+    },
+    {
+      "id": "snack-package",
+      "tag": "product",
+      "title": {
+        "ja": "お菓子パッケージ編",
+        "en": "Snack Package",
+        "zh": "零食包装篇"
+      },
+      "subtitle": {
+        "ja": "画像をお菓子パッケージに変換",
+        "en": "Image-to-Snack Package",
+        "zh": "图像转零食包装"
+      },
+      "image": "images/snack_package.png",
+      "prompt": "**[AI指示: 画像→お菓子パッケージ変換]**\n\n**[入力画像]** を分析する。\n\n1. **抽出:** [メインモチーフ]、[雰囲気]、[カラーパレット]を読み取る。\n2. **お菓子選択:** 画像の世界観に合うお菓子を自由に選ぶ（キャンディ、グミ、チョコレート、クッキー、スナック、ラムネ、金平糖、マシュマロなど）\n3. **パッケージデザイン:** モチーフと色をパッケージに反映。袋、箱、缶、瓶など形状も自由に。\n4. **テキスト:** 画像内に文字があれば商品名やキャッチコピーとして活用。\n\n**[メインモチーフ]**\nコンビニやヴィレヴァンで見つけて「かわいい！」と手に取りたくなるお菓子パッケージ。[入力画像]の世界観がそのままお菓子になったようなデザイン。[検出されたモチーフ]がキャラクターやイラストとしてパッケージを飾る。中身のお菓子も色や形がテーマに合っている。\n\n**[雰囲気]**\n商品撮影のようなクリアな写真。パッケージの質感（マット、光沢、透明窓、箔押し）がわかる。中身が少し見えていたり、お菓子が周りに散らばっていてもいい。思わずパケ買いしたくなるデザイン。"
+    },
+    {
+      "id": "blind-box",
+      "tag": "product",
+      "title": {
+        "ja": "ブラインドボックス編",
+        "en": "Blind Box",
+        "zh": "盲盒篇"
+      },
+      "subtitle": {
+        "ja": "画像をブラインドボックスに変換",
+        "en": "Image-to-Blind Box",
+        "zh": "图像转盲盒"
+      },
+      "image": "images/blind_box.png",
+      "prompt": "**[AI指示: 画像→ブラインドボックス変換]**\n\n**[入力画像]** を分析する。\n\n1. **抽出:** [メインモチーフ]、[雰囲気]、[カラーパレット]を読み取る。\n2. **テーマ決定:** 画像の雰囲気からシリーズテーマを自由に決める（例：やる気ないシリーズ、八方美人シリーズ、頑張り屋さんシリーズ、悲劇のヒロインシリーズ、深夜テンションシリーズ、月曜日シリーズ、推し活シリーズ、猫に転生シリーズなど）\n3. **ミニチュア化:** モチーフをテーマに沿った手のひらサイズのフィギュアに。デフォルメ、ちびキャラ化も自由。\n4. **コレクション展開:** テーマに沿った3〜8種類のバリエーション。ポーズ・表情・シチュエーション違い。シークレットあり。\n5. **パッケージ:** 中身が見えないブラインドボックス。テーマが伝わるオリジナルデザイン。実在商品に似せない。\n6. **テキスト:** 画像内に文字があればシリーズ名として活用。\n\n**[メインモチーフ]**\n雑貨屋やヴィレヴァンで見つけて「わかるwww」と共感するブラインドボックス。[入力画像]の世界観×ユニークなテーマのミニチュアシリーズ。[検出されたモチーフ]がテーマに沿った色々なシチュエーションで展開。どれが出ても「あるある」と笑える。\n\n**[雰囲気]**\nフィギュアとブラインドボックスが一緒に並んだ商品写真。開封済みのフィギュアと未開封のボックスが混在。テーマがわかるキャッチーなパッケージ。思わずSNSでシェアしたくなる。フォトリアリスティック。"
     }
   ]
 }
