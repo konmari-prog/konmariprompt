@@ -1227,7 +1227,7 @@
 
         async function loadPrompts() {
             try {
-                const response = await fetch('prompts.json');
+                const response = await fetch('prompts.json?v=' + Date.now());
                 promptData = await response.json();
                 updateI18n();
                 renderCategoryNav();
