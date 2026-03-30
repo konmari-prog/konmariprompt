@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>ポップアップカード プロンプト | konmari × ユニコ オープンチャット開設記念</title>
+  <meta name="description" content="画像を渡すだけで、手作りポップアップカードに変換するAIプロンプトを無料プレゼント。konmari × ユニコ オープンチャット開設記念企画。">
+  <meta property="og:title" content="ポップアップカード プロンプト プレゼント">
+  <meta property="og:description" content="画像を渡すだけで手作りポップアップカードに変換するAIプロンプトを無料プレゼント">
+  <meta property="og:image" content="hero.png">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pink: #f5a0c0;
+      --lavender: #c5a3d9;
+      --mint: #a8d8cb;
+      --sky: #a8d4e6;
+      --cream: #fdf6ee;
+      --peach: #f8e0d0;
+      --text: #4a4a4a;
+      --text-light: #7a7a7a;
+      --card-bg: #ffffff;
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    /* ---- decorative background ---- */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(245,160,192,0.15) 0%, transparent 50%),
+        radial-gradient(circle at 85% 60%, rgba(197,163,217,0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 90%, rgba(168,216,203,0.10) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    /* ---- header ---- */
+    .header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 4px 16px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    /* ---- hero image ---- */
+    .hero {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      margin-bottom: 36px;
+    }
+
+    .hero img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ---- how to use ---- */
+    .how-to {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .how-to h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .how-to h2 .material-icons {
+      font-size: 20px;
+      color: var(--lavender);
+    }
+
+    .steps {
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .steps li {
+      counter-increment: step;
+      position: relative;
+      padding-left: 40px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .steps li:last-child { margin-bottom: 0; }
+
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 1px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--peach), var(--pink));
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .steps li strong {
+      color: var(--text);
+    }
+
+    /* ---- prompt section ---- */
+    .prompt-section {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .prompt-section h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prompt-section h2 .material-icons {
+      font-size: 20px;
+      color: var(--pink);
+    }
+
+    .prompt-box {
+      background: #faf7f3;
+      border: 1px solid #ede8e1;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      max-height: 320px;
+      overflow-y: auto;
+      font-size: 13px;
+      line-height: 1.9;
+      color: var(--text);
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .prompt-box::-webkit-scrollbar {
+      width: 6px;
+    }
+    .prompt-box::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .prompt-box::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 3px;
+    }
+
+    /* ---- copy button ---- */
+    .copy-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--pink), var(--lavender));
+      color: #fff;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 4px 16px rgba(197,163,217,0.3);
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(197,163,217,0.4);
+    }
+
+    .copy-btn:active {
+      transform: translateY(0);
+    }
+
+    .copy-btn .material-icons {
+      font-size: 20px;
+    }
+
+    .copy-btn.copied {
+      background: linear-gradient(135deg, var(--mint), #8ec5b0);
+    }
+
+    /* ---- note ---- */
+    .note-box {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+
+    .note-box h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .note-box h3 .material-icons {
+      font-size: 18px;
+      color: var(--sky);
+    }
+
+    .note-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .note-box ul li {
+      padding-left: 20px;
+      position: relative;
+      margin-bottom: 6px;
+    }
+
+    .note-box ul li::before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 10px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--peach);
+    }
+
+    /* ---- footer ---- */
+    .footer {
+      text-align: center;
+      padding-top: 8px;
+    }
+
+    .footer-credit {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .footer-credit a {
+      color: var(--lavender);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer-credit a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-small {
+      font-size: 11px;
+      color: #bbb;
+    }
+
+    /* ---- toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: rgba(74,74,74,0.92);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 12px;
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast .material-icons {
+      font-size: 18px;
+      color: var(--mint);
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- header -->
+  <header class="header">
+    <span class="header-badge">OPEN CHAT PRESENT</span>
+    <h1>konmari × ユニコ<br>オープンチャット開設記念</h1>
+    <p>画像を渡すだけで手作りポップアップカードに変換する<br>AIプロンプトをプレゼント</p>
+  </header>
+
+  <!-- hero -->
+  <div class="hero">
+    <img src="hero.png" alt="ポップアップカードの作例 - konmariとユニコーンが手をつないだ手作り風カード" width="1024" height="1024">
+  </div>
+
+  <!-- how to use -->
+  <section class="how-to">
+    <h2><span class="material-icons">auto_fix_high</span>使い方</h2>
+    <ol class="steps">
+      <li><strong>プロンプトをコピー</strong>して、ChatGPTやClaudeなどの画像生成AIに貼り付ける</li>
+      <li>カードにしたい<strong>画像を一緒に添付</strong>する</li>
+      <li>「メッセージ」の空欄にカードに入れたい言葉を書く（空欄のままでもOK）</li>
+      <li>送信すると、あなただけの<strong>ポップアップカード画像</strong>が生成される</li>
+    </ol>
+  </section>
+
+  <!-- prompt -->
+  <section class="prompt-section">
+    <h2><span class="material-icons">content_copy</span>プロンプト</h2>
+    <div class="prompt-box" id="promptText">[AI指示: 画像→手作りポップアップカード変換]
+
+メッセージ →「              」
+（空欄の場合、画像の雰囲気に合ったメッセージを自動で創作します）
+
+[入力画像] を分析する。
+
+1. 抽出: [入力画像]からキャラクター/人物の特徴（髪型、髪色、服装、表情、アクセサリー）と[カラーパレット]を読み取る。構図やポーズは参考にしなくてよい。
+
+2. 用途の決定: 画像の雰囲気からカードの用途を自由に決める（誕生日、感謝、お祝い、季節の挨拶、応援、ラブレター、卒業、出産祝いなど）。
+
+3. クラフト変換: 抽出したキャラクターの特徴を保ちつつ、ポップアップカードに映える構図・ポーズに自由にアレンジする。写真やイラストをそのまま使うのではなく、色画用紙の切り貼り、水彩の手塗り、クレヨン、色鉛筆、スタンプなどのハンドメイド技法で一から作り直す。全体のトーンはほっこりかわいい雰囲気に。丸みのあるフォルム、やさしいパステルカラー、ゆるいタッチで心が温まるデザインにする。
+
+4. メッセージ配置: ユーザーの入力メッセージをカード内の自然な位置に手書き風で配置。
+
+5. テキスト: 画像内に文字があればカードの装飾テキストとして活用。
+
+[ポップアップ構造の設計ルール]
+カードは1枚の台紙を二つ折りにした構造。ポップアップは以下の物理法則を厳守すること：
+
+・すべての飛び出すパーツは台紙の折り線（中央の谷折り）に接続している。浮いているパーツは存在しない。
+・各パーツは「切り込み＋折り」または「別パーツの貼り付け」で立ち上がる。切り込みタイプは台紙と一体で、山折り・谷折りの組み合わせで起き上がる。
+・カードを閉じたとき、すべてのパーツが台紙の間に平らに収まる。台紙からはみ出すパーツは不可。
+・パーツの高さは台紙の幅の半分を超えない。奥のパーツは低く、手前のパーツは高く、遠近感をつける。
+・左右対称の折り構造を基本とし、開いたときに均等に立ち上がるようにする。
+
+[メインモチーフ]
+カードを開いた瞬間に「かわいい！」と声が出る手作りポップアップカード。[入力画像]のキャラクターの特徴（髪型、髪色、服装など）を押さえつつ、少しデフォルメしてころんと丸みのあるかわいいフォルムに。カードに合う自由な構図で色画用紙やクラフト素材を使って一から手作りされた作品。紙を切り抜き、重ね貼りし、手彩色された温かみのあるクラフト表現。背景には小花や星、ハートなどの小さな飾りを散りばめた2〜3層のレイヤー。台紙部分にメッセージが手書き風で添えられている。
+
+[クラフト表現]
+・素材: パステルカラーの色画用紙、クラフト紙、トレーシングペーパー、フェルト、布の切れ端。
+・技法: ハサミやクラフトパンチで切り抜いた紙の重ね貼り。水彩・色鉛筆・クレヨンでのやさしい手塗り。マスキングテープ、小さなリボン、くるみボタン、押し花、ラメ、刺繍糸、レースペーパーなどの装飾。
+・色味: ミルキーなパステルトーンを基調に、差し色でアクセント。全体的にやわらかく温かい配色。
+・質感: 紙の切り口の白い断面、貼り合わせの厚み、手塗りの筆ムラやはみ出しなど「人の手で作った」痕跡を大切にする。
+
+[雰囲気]
+カードを開いた状態を斜め上から撮影。ポップアップが台紙の折り線から正しく立ち上がり、紙の厚み・折り目の影がリアルに見える。メッセージが読める角度。背景は木のテーブルやリネンのクロスの上に封筒やペン、ドライフラワーが添えられている。既製品ではなく誰かが心を込めて手作りしたカード。完璧すぎない手仕事の味わい。見ているだけでほっこり温かい気持ちになる、贈る人の愛情が伝わる一枚。柔らかい自然光。フォトリアリスティック。</div>
+    <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+      <span class="material-icons">content_copy</span>
+      <span id="copyLabel">プロンプトをコピーする</span>
+    </button>
+  </section>
+
+  <!-- tips -->
+  <div class="note-box">
+    <h3><span class="material-icons">tips_and_updates</span>きれいに生成するコツ</h3>
+    <ul>
+      <li>ChatGPT（GPT-4o / 4.5）での生成がおすすめ</li>
+      <li>人物写真でもイラストでもOK</li>
+      <li>メッセージは短めの方がカードに映える</li>
+      <li>気に入らなければ「もう一度」で再生成できる</li>
+    </ul>
+  </div>
+
+  <!-- footer -->
+  <footer class="footer">
+    <p class="footer-credit">
+      Prompt by <a href="https://x.com/konmari_tweet" target="_blank" rel="noopener">@konmari_tweet</a>
+    </p>
+    <p class="footer-small">konmari × ユニコ オープンチャット開設記念プレゼント</p>
+  </footer>
+
+</div>
+
+<!-- toast -->
+<div class="toast" id="toast">
+  <span class="material-icons">check_circle</span>
+  コピーしました
+</div>
+
+<script>
+function copyPrompt() {
+  const text = document.getElementById('promptText').textContent;
+  const btn = document.getElementById('copyBtn');
+  const label = document.getElementById('copyLabel');
+  const toast = document.getElementById('toast');
+
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    label.textContent = 'コピーしました';
+    btn.querySelector('.material-icons').textContent = 'check_circle';
+
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      label.textContent = 'プロンプトをコピーする';
+      btn.querySelector('.material-icons').textContent = 'content_copy';
+    }, 3000);
+  }).catch(() => {
+    // fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+
+    btn.classList.add('copied');
+    label.textContent = 'コピーしました';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      label.textContent = 'プロンプトをコピーする';
+    }, 3000);
+  });
+}
+</script>
+
+</body>
+</html>
