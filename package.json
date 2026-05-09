@@ -1,0 +1,10 @@
+{
+  "name": "konmari-prompt",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync:gpt": "node scripts/sync-gpt-prompts.mjs",
+    "sync:gpt:dry": "node scripts/sync-gpt-prompts.mjs --dry-run"
+  }
+}

@@ -1315,6 +1315,10 @@
 
         function getCategoryLabel(prompt) {
             const category = t(`cat.${prompt.tag}`) || 'Prompt';
+            const badge = getLocalizedText(prompt.badge);
+            if (badge) {
+                return `${category} / ${badge}`;
+            }
             if (prompt.occasion) {
                 return `${category} / ${t(`occasion.${prompt.occasion}`)}`;
             }
