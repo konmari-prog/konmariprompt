@@ -1309,6 +1309,7 @@
         }
 
         function getLocalizedText(obj) {
+            if (!obj) return '';
             if (typeof obj === 'string') return obj;
             return obj[currentLang] || obj['ja'] || '';
         }
