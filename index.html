@@ -1093,7 +1093,7 @@
     <script>
         let promptData = null;
         let currentPrompt = null;
-        let currentFilter = 'all'; // all, christmas, newyear, favorites
+        let currentFilter = 'all'; // all, seasonal, product, advertising, craft, favorites
         let favorites = JSON.parse(localStorage.getItem('konmari-favorites') || '[]');
         let currentLang = localStorage.getItem('konmari-lang') || 'ja';
 
@@ -1109,8 +1109,12 @@
                 'section.title': '画像変換プロンプト',
                 'section.desc': 'カテゴリーを選んで、お好みのプロンプトを見つけてください',
                 'cat.all': 'すべて',
-                'cat.christmas': 'クリスマス',
-                'cat.newyear': 'お正月',
+                'cat.seasonal': '季節イベント',
+                'cat.product': '商品化',
+                'cat.advertising': '広告・ポスター',
+                'cat.craft': 'クラフト・手作り',
+                'occasion.christmas': 'クリスマス',
+                'occasion.newyear': 'お正月',
                 'cat.favorites': 'お気に入り',
                 'modal.copy': 'コピー',
                 'modal.copied': 'コピー完了',
@@ -1135,8 +1139,12 @@
                 'section.title': 'Image Transformation Prompts',
                 'section.desc': 'Select a category and find your favorite prompts',
                 'cat.all': 'All',
-                'cat.christmas': 'Christmas',
-                'cat.newyear': 'New Year',
+                'cat.seasonal': 'Seasonal Events',
+                'cat.product': 'Product Ideas',
+                'cat.advertising': 'Ads & Posters',
+                'cat.craft': 'Crafts',
+                'occasion.christmas': 'Christmas',
+                'occasion.newyear': 'New Year',
                 'cat.favorites': 'Favorites',
                 'modal.copy': 'Copy',
                 'modal.copied': 'Copied!',
@@ -1161,8 +1169,12 @@
                 'section.title': '图像转换提示词',
                 'section.desc': '选择类别，找到您喜欢的提示词',
                 'cat.all': '全部',
-                'cat.christmas': '圣诞节',
-                'cat.newyear': '新年',
+                'cat.seasonal': '季节活动',
+                'cat.product': '商品化',
+                'cat.advertising': '广告・海报',
+                'cat.craft': '手工制作',
+                'occasion.christmas': '圣诞节',
+                'occasion.newyear': '新年',
                 'cat.favorites': '收藏',
                 'modal.copy': '复制',
                 'modal.copied': '已复制',
@@ -1260,19 +1272,14 @@
             allBtn.onclick = () => setFilter('all');
             nav.appendChild(allBtn);
 
-            // クリスマスタブ
-            const xmasBtn = document.createElement('button');
-            xmasBtn.className = 'category-btn' + (currentFilter === 'christmas' ? ' active' : '');
-            xmasBtn.textContent = t('cat.christmas');
-            xmasBtn.onclick = () => setFilter('christmas');
-            nav.appendChild(xmasBtn);
-
-            // お正月タブ
-            const nyBtn = document.createElement('button');
-            nyBtn.className = 'category-btn' + (currentFilter === 'newyear' ? ' active' : '');
-            nyBtn.textContent = t('cat.newyear');
-            nyBtn.onclick = () => setFilter('newyear');
-            nav.appendChild(nyBtn);
+            const categories = ['seasonal', 'product', 'advertising', 'craft'];
+            categories.forEach(category => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn' + (currentFilter === category ? ' active' : '');
+                btn.textContent = t(`cat.${category}`);
+                btn.onclick = () => setFilter(category);
+                nav.appendChild(btn);
+            });
 
             // お気に入りタブ
             const favBtn = document.createElement('button');
@@ -1306,10 +1313,12 @@
             return obj[currentLang] || obj['ja'] || '';
         }
 
-        function getCategoryLabel(tag) {
-            if (tag === 'christmas') return t('cat.christmas');
-            if (tag === 'newyear') return t('cat.newyear');
-            return 'Prompt';
+        function getCategoryLabel(prompt) {
+            const category = t(`cat.${prompt.tag}`) || 'Prompt';
+            if (prompt.occasion) {
+                return `${category} / ${t(`occasion.${prompt.occasion}`)}`;
+            }
+            return category;
         }
 
         function renderCards(prompts) {
@@ -1341,7 +1350,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="card-category">${getCategoryLabel(p.tag)}</div>
+                        <div class="card-category">${getCategoryLabel(p)}</div>
                         <h3 class="card-title">${title}</h3>
                         <p class="card-subtitle">${subtitle}</p>
                     </div>
@@ -1381,7 +1390,7 @@
             const subtitle = getLocalizedText(currentPrompt.subtitle);
 
             document.getElementById('modal-image').src = currentPrompt.image;
-            document.getElementById('modal-category').textContent = getCategoryLabel(currentPrompt.tag);
+            document.getElementById('modal-category').textContent = getCategoryLabel(currentPrompt);
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-subtitle').textContent = subtitle;
             document.getElementById('modal-prompt').textContent = currentPrompt.prompt;
@@ -1492,8 +1501,8 @@
                     showToast(t('toast.image.copied'));
                 }
 
-                const text = `【${title}】\n${subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう✨\n\n#KONMARIprompt #AI画像生成`;
-                const url = 'https://konmari-prog.github.io/konmariprompt/';
+                const text = `【${title}】\n${subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう\n\n#KONMARIprompt #AI画像生成`;
+                const url = 'https://konmari-handout.pages.dev/konmari-prompt/';
                 const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
 
                 setTimeout(() => {
@@ -1502,8 +1511,8 @@
 
             } catch (e) {
                 console.error('Share failed:', e);
-                const text = `【${title}】\n${subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう✨\n\n#KONMARIprompt #AI画像生成`;
-                const url = 'https://konmari-prog.github.io/konmariprompt/';
+                const text = `【${title}】\n${subtitle}\n\nKONMARI promptで素敵なAI画像を作ろう\n\n#KONMARIprompt #AI画像生成`;
+                const url = 'https://konmari-handout.pages.dev/konmari-prompt/';
                 const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
                 window.open(xUrl, '_blank', 'width=550,height=520');
             }
