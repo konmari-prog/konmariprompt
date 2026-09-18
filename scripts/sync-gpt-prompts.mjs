@@ -132,6 +132,8 @@ function parsePublishedMarkdown(mdPath) {
   const badge = optionalLocalizedObject(meta, 'badge');
   if (badge) prompt.badge = badge;
   if (meta.occasion) prompt.occasion = meta.occasion;
+  if (meta.image_fit) prompt.imageFit = meta.image_fit;
+  if (meta.hero !== undefined) prompt.hero = truthy(meta.hero);
 
   return { mdPath, sourceImagePath, prompt };
 }

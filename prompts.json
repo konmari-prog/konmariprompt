@@ -622,7 +622,9 @@
         "ja": "誕生日",
         "en": "誕生日",
         "zh": "誕生日"
-      }
+      },
+      "imageFit": "contain",
+      "hero": false
     }
   ]
 }

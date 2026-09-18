@@ -488,6 +488,12 @@
             transition: transform 0.6s var(--ease);
         }
 
+        .card-image.contain {
+            object-fit: contain;
+            padding: 1rem;
+            background: #fff;
+        }
+
         .card:hover .card-image {
             transform: scale(1.05);
         }
@@ -646,6 +652,12 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .modal-image.contain {
+            object-fit: contain;
+            padding: 1.5rem;
+            background: #fff;
         }
 
         @media (max-width: 900px) {
@@ -1251,7 +1263,7 @@
         }
 
         function updateHeroImages() {
-            const latest = [...promptData.prompts].reverse().slice(0, 3);
+            const latest = [...promptData.prompts].filter(p => p.hero !== false).reverse().slice(0, 3);
             const heroImages = document.querySelectorAll('#hero-images .hero-image-item img');
             latest.forEach((p, i) => {
                 if (heroImages[i]) {
@@ -1340,9 +1352,10 @@
                 };
                 const title = getLocalizedText(p.title);
                 const subtitle = getLocalizedText(p.subtitle);
+                const imageClass = p.imageFit === 'contain' ? 'card-image contain' : 'card-image';
                 card.innerHTML = `
                     <div class="card-image-wrap">
-                        <img src="${p.image}" alt="${title}" class="card-image">
+                        <img src="${p.image}" alt="${title}" class="${imageClass}">
                         <div class="card-overlay">
                             <div class="card-quick-actions">
                                 <button class="quick-btn" onclick="event.stopPropagation(); copyPrompt('${p.id}')" title="${t('modal.copy')}">
@@ -1395,6 +1408,7 @@
             const subtitle = getLocalizedText(currentPrompt.subtitle);
 
             document.getElementById('modal-image').src = currentPrompt.image;
+            document.getElementById('modal-image').className = currentPrompt.imageFit === 'contain' ? 'modal-image contain' : 'modal-image';
             document.getElementById('modal-category').textContent = getCategoryLabel(currentPrompt);
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-subtitle').textContent = subtitle;
